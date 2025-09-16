@@ -1,5 +1,5 @@
 ---
-title: "neanderthal_introgression_maps.md"
+title: "NeanderthalIntrogressionMaps.md"
 author: "Yaen Chen"
 date: "2025-08-11"
 output: github_document

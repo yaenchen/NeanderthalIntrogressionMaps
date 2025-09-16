@@ -9,7 +9,7 @@ For hg19, hg38, and T2T genome builds, we provide:
 - all_deserts.bg: contains desert regions across methods, with each column (method) containing either 1 (desert region for that method) or 0 (not a desert regions for that method)
 
 ## introgression_maps: Contains introgressed regions and variants. 
-NOTE: Files are gzipped to save space.
+NOTE: Files listed directly below are gzipped to save space.
 
 - **all_methods_boolean.bg** contains introgressed regions across methods, with each column (method) containing True or False
 - **all_methods.bg** contains introgressed regions across methods, with each column (method) containing an associated score specific to each method, described in the Methods section of the manuscript.
@@ -24,6 +24,5 @@ NOTE: Files are gzipped to save space.
 
 For each map with varying amounts of support (maps_by_support):
 
-NOTE: Files are gzipped to save space.
-- **min_num_methods** contains merged regions and variants supported by different numbers of methods
+- **min_num_methods** contains merged regions and variants supported by different numbers of methods. NOTE: Files in this directory only are gzipped to save space.
 - **num_methods** contains merged regions and variants (introgressed_regions_n_methods.bed) supported by at least n numbers of methods

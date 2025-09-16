@@ -4,7 +4,7 @@ author: "Yaen Chen"
 date: "2025-08-11"
 output: github_document
 ---
-# Code and Data for "Comparing genomic Neanderthal introgression maps reveals core agreement but substantial heterogeneity"
+# Code and data for "Comparing genomic Neanderthal introgression maps reveals core agreement but substantial heterogeneity"
    
 ## Overview
 
@@ -25,7 +25,7 @@ Project directory:
 
 ```bash
 project_directory # The working directory
-├── data
+├── data # see README for additional file descriptions within each folder
 │   ├── hg19
 │   ├── hg38
 │   └── T2T

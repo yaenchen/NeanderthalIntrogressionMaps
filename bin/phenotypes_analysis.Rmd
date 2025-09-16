@@ -1,0 +1,1175 @@
+---
+title: "phenotype analysis (introgression methods)"
+author: "Yaen Chen"
+date: "2025-04-02"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Load libraries
+Commented out code is used for installation.
+```{r}
+#if (!requireNamespace("BiocManager", quietly=TRUE))
+#    install.packages("BiocManager")
+#BiocManager::install("TxDb.Hsapiens.UCSC.hg19.knownGene", force = TRUE)
+#BiocManager::install("org.Hs.eg.db", force = TRUE)
+#BiocManager::install("annotatr")
+#BiocManager::install("KEGGREST", force = TRUE)
+#BiocManager::install("magick", force = TRUE)
+
+library(dplyr)
+library(tidyr)
+library(UpSetR)
+library(ComplexUpset)
+library(enrichR)
+library(tidyverse)
+library(KEGGREST)
+library('annotatr')
+library('rGREAT')
+library(TxDb.Hsapiens.UCSC.hg19.knownGene)
+tx <- TxDb.Hsapiens.UCSC.hg19.knownGene
+library(org.Hs.eg.db)
+library(karyoploteR)
+
+# set home dir
+HOMEDIR='/wynton/home/capra/ychen39/'
+GREAT_input_dir = '/wynton/home/capra/ychen39/introgression_methods/data/GREAT_analysis/input'
+all_methods_concat = '/wynton/home/capra/ychen39/introgression_methods/cleaned/introgression_tools/all_methods.bed'
+
+# renaming methods
+rename_dict <- c('ibdmix' = 'IBDMix', 'argweaverd' = 'ARGweaver-D', 'archaicseeker' = 'ArchaicSeeker2', 'archie' = 'ArchIE',
+                 'sprime' = 'Sprime', 'sarge' = 'SARGE', 'vernot_2016' = 'S*', 'sankararaman2014' = 'Sankararaman14',
+                 'sankararaman2016_1' = 'Sankararaman16 (1)', 'sankararaman2016_2' = 'Sankararaman16 (2)', 'skov2020' = 'Skov20',
+                 'steinruecken2018' = 'DICAL-ADMIX')
+
+# set home dir
+HOMEDIR="/wynton/home/capra/ychen39/"
+
+# method directories vector
+methods_dirs = c("chen_2020", "yuan_2021", "durvasula_2019", "steinruecken_2018", "skov_2020", "schaefer_2021", "hubisz_2020", "browning_2018", "vernot_2016", "sankararaman_2014", "sankararaman_2016_1", "sankararaman_2016_2")
+
+deserts_dirs = c("chen_2020", "yuan_2021", "skov_2020", "vernot_2016", "sankararaman_2016_1")
+
+# set default font to helvetica
+par(family = "Helvetica") 
+```
+
+# rGREAT analysis
+
+## Get list of directories for input files
+```{r}
+# create list of file paths for input files (introgressed merged files for each method)
+# given a GREAT_analysis/input directory, get input files
+
+setwd(GREAT_input_dir)
+
+introgressed_list <- list.files(path = GREAT_input_dir, pattern = "\\_GREAT_merged.bed$", full.names = TRUE)
+
+# remove the overlap_10_methods_GREAT_merged.bed, overlap_10_no_archie_argweaver_GREAT_merged.bed, overlap_12_methods_GREAT_merged.bed
+introgressed_list <- introgressed_list[!sapply(introgressed_list, function(x) endsWith(x, 'overlap_10_methods_GREAT_merged.bed'))]
+introgressed_list <- introgressed_list[!sapply(introgressed_list, function(x) endsWith(x, 'overlap_10_no_archie_argweaver_GREAT_merged.bed'))]
+introgressed_list <- introgressed_list[!sapply(introgressed_list, function(x) endsWith(x, 'overlap_12_methods_GREAT_merged.bed'))]
+```
+
+## rGREAT custom function
+```{r}
+# function to run great, with background file optional (default is hg19 without gaps from rGREAT)
+run_GREAT_GO <- function(input_file_bed_path, background_file_path_bed, GO_type) {
+    input_granges = read_regions(con = input_file_bed_path, genome = 'hg19', format = 'bed')
+    if(missing(background_file_path_bed)) {
+      return(great(input_granges, GO_type, "txdb:hg19"))
+    }
+    
+    else {
+    background_granges <- read_regions(con = background_file_path_bed, genome = 'hg19', format = 'bed')
+    
+    return(great(input_granges, GO_type, "txdb:hg19", background=background_granges, exclude = "gap"))
+    }
+}
+```
+
+## Each introgression map separately for HPO (no background)
+See https://jokergoo.github.io/rGREAT/articles/local-GREAT.html
+also save a large dataframe with all phenotype associations by method for PCA
+Table rGREATphenotypes is taken from the number of rows in sig_list
+```{r}
+# run for all input files, store results in res_list
+res_list = list()
+region_gene_list = list()
+
+# store each results table in lists
+for(introgressed_method in introgressed_list) {
+    res_list[[introgressed_method]] = run_GREAT_GO(input_file_bed_path=introgressed_method, GO_type='msigdb:C5:HPO')
+    region_gene_list[[introgressed_method]] = getRegionGeneAssociations(res_list[[introgressed_method]])
+}
+
+# all phenotypes
+all_phenos_list = lapply(res_list, function(x) {
+    tb = getEnrichmentTable(x)
+    tb[tb$p_adjust < 1,]
+})
+
+# subset only significantly associated phenotypes
+sig_list = lapply(res_list, function(x) {
+    tb = getEnrichmentTable(x)
+    tb[tb$p_adjust < 0.05,]
+})
+
+# edit names in the final table so they don't contain file path and suffix
+names(sig_list) <- sub("/", "", sub(GREAT_input_dir, "", sub("_GREAT_merged.bed$", "", names(sig_list))))
+names(all_phenos_list) <- sub("/", "", sub(GREAT_input_dir, "", sub("_GREAT_merged.bed$", "", names(all_phenos_list))))
+
+# all phenotypes tested for each map in a separate all_phenos dataframe
+all_phenos <- bind_rows(all_phenos_list, .id = "method")
+```
+
+## rGREAT PCA
+```{r}
+# subset data of interest
+subset <- all_phenos[c('id', 'p_adjust', 'method')]
+
+# remove extra sets (keeping only each method separately)
+subset <- subset[subset$method != "overlap_12_methods", ]
+subset <- subset[subset$method != "overlap_10_no_archie_argweaver", ]
+subset <- subset[subset$method != "overlap_10_methods", ]
+
+# pivot data so the introgression method are rows, columns are adjusted p for each phenotype
+pivot_data <- subset %>%
+  pivot_wider(
+    names_from = id,
+    values_from = c(p_adjust)
+  )
+
+# remove introgression map label (method), save for later
+group_labels <- pivot_data$method
+# drop non-numeric columns
+pivot_data <- dplyr::select(pivot_data, where(is.numeric))
+
+# remove columns with NAs
+pivot_data <- pivot_data[, colSums(is.na(pivot_data)) == 0]
+
+# standardize data
+scaled_data <- scale(pivot_data)
+
+# check for constant values in a column (zero variance), remove
+zero_variance_columns <- apply(scaled_data, 2, function(x) var(x) == 0)
+scaled_data <- scaled_data[, !zero_variance_columns]
+
+# PCA
+pca_result <- prcomp(scaled_data, center = TRUE, scale. = TRUE)
+
+# df for PCA results
+pca_df <- as.data.frame(pca_result$x) %>%
+  mutate(method = group_labels)
+
+# add method names back to PCA results
+pca_df <- pca_df %>%
+  mutate(method = recode(method, !!!rename_dict))
+
+# save fig
+svg(filename=paste0(HOMEDIR, 'introgression_methods/figures/rGREAT_phenotype_PCA.svg'), width = 8, height = 5)
+
+# plot of first 2 principal components
+ggplot(pca_df, aes(x = PC1, y = PC2, color = method)) +
+  geom_point(size = 3) +
+  labs(
+    title = "PCA of rGREAT Phenotypes by Introgression Methods",
+    x = paste0("Principal Component 1 (", round(explained_variance[1]*100, digits=2), "%)"), 
+    y = paste0("Principal Component 2 (", round(explained_variance[2]*100, digits=2), "%)"),
+    fill = "Method"
+  ) +
+  theme_minimal() +
+  theme(legend.title = element_text(size = 10))
+
+dev.off()
+
+# calculate explained variances
+explained_variance <- pca_result$sdev^2 / sum(pca_result$sdev^2) 
+
+```
+
+## Bar plot: number methods supporting a phenotype
+```{r}
+# get unique and shared (more than one method found a pheno sig) significant phenotypes
+sig_phenos <- all_phenos[all_phenos$p_adjust<0.05, ]
+unique_phenos <- sig_phenos %>% group_by(id) %>% filter(n() == 1)
+shared_phenos <- sig_phenos %>% group_by(id) %>% filter(n() > 1)
+
+# collapse multiple methods supporting a phenotype into one column
+# commas separating methods
+all_phenos_summarise <- sig_phenos %>%
+  group_by(id) %>%
+  arrange(p_adjust) %>%
+  reframe(
+    method = paste(unique(method), collapse = ", "),  # concatenate methods
+    num_methods_support = str_count(method, ", ") + 1,  # column for num methods supporting a phenotype
+    p_adjust = dplyr::first(p_adjust),  # keep smallest p_adjust
+    fold_enrichment = dplyr::first(fold_enrichment)  # keep smallest fold_enrichment
+)
+
+svg(filename=paste0(HOMEDIR, 'introgression_methods/figures/rGREAT_phenotype_counts_bar.svg'), width = 3, height = 4)
+
+ggplot(all_phenos_summarise, aes(x = factor(num_methods_support))) +
+  geom_bar(fill = "steelblue") +
+  geom_text(stat = "count", aes(label = ..count..), vjust = -0.5, size = 4) +  # Add counts above bars
+  labs(
+    x = "Number of Methods",
+    y = "Number of Phenotypes",
+    title = "Number of Phenotypes Supported by Number of Maps"
+  ) +
+  theme_minimal() +
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank()
+  )
+
+dev.off()
+```
+
+## Upset plot of multiple methods supporting sig phenotypes
+```{r}
+# collapse multiple methods supporting a phenotype into one column
+# commas separating methods
+shared_phenos_summarise <- shared_phenos %>%
+  group_by(id) %>%
+  arrange(p_adjust) %>%
+  reframe(
+    method = paste(unique(method), collapse = ", "),  # concatenate methods
+    num_methods_support = str_count(method, ", ") + 1,  # column for num methods supporting a phenotype
+    p_adjust = dplyr::first(p_adjust),  # keep smallest p_adjust
+    fold_enrichment = dplyr::first(fold_enrichment)  # keep smallest fold_enrichment
+)
+
+# Prepare the data:
+upset_data <- shared_phenos_summarise %>%
+  filter(num_methods_support >= 2) %>%       # Keep only phenotypes with 2+ methods
+  dplyr::select(id, method) %>%              # Select phenotype id and method columns
+  separate_rows(method, sep = ", ") %>%      # Split comma-separated methods into individual rows
+  mutate(present = 1) %>%                    # Create an indicator for method presence
+  pivot_wider(
+    names_from = method,
+    values_from = present,
+    values_fill = list(present = 0),
+    values_fn = list(present = max)          # Resolve duplicate entries if any
+  ) %>%
+  ungroup()
+
+# Remove the 'id' column (UpSetR expects only binary indicator columns)
+upset_matrix <- as.data.frame(upset_data %>% dplyr::select(-id))
+
+# Rename columns in your dataframe
+upset_matrix <- upset_matrix %>%
+  rename_with(~ rename_dict[.x], .cols = names(rename_dict)[names(rename_dict) %in% colnames(upset_matrix)])
+
+#svg(filename=paste0(HOMEDIR, 'introgression_methods/figures/rGREAT_phenotypes_upset.svg'), width = 10, height = 5)
+
+# Create an upset plot using UpSetR:
+UpSetR::upset(
+  upset_matrix,
+  order.by = "freq",
+  nintersects = NA,  # show all possible intersections
+  nsets='6'
+)
+
+#dev.off()
+```
+
+
+## Plot phenos supported by 3+ methods as a "heatmap"
+```{r}
+# subset sig phenos supported by 3+ methods
+top_phenos_df <- sig_phenos %>% group_by(id) %>% filter(n() > 2)
+# get phenotype names separately
+top_phenos <- top_phenos_df$id
+
+# compute and convert gene overlap to fraction
+top_phenos_df$Overlap <- top_phenos_df$observed_gene_hits / top_phenos_df$gene_set_size
+top_phenos_df$Overlap <- sapply(top_phenos_df$Overlap, function(x) eval(parse(text=as.character(x))))
+
+# rename columns in dataframe to standardize method names
+top_phenos_df <- top_phenos_df %>% mutate(method = recode(method, !!!rename_dict))
+
+# add a highlight column to highlight the y axis phenotype if it is present in high support loci (sig_list_10_or_more)
+top_phenos_df <- top_phenos_df %>%
+  mutate(highlight = ifelse(id %in% sig_list_10_or_more$id, "highlight", "normal"))
+
+# remove prefix and _ in phenotypes
+top_phenos_df$id <- gsub('HP_', "", top_phenos_df$id)
+top_phenos_df$id <- gsub('_', " ", top_phenos_df$id)
+
+# order phenotypes by number of appearances
+phenotype_counts <- top_phenos_df %>%
+  group_by(id) %>%
+  summarise(freq = n(), min_p = min(p_adjust))
+
+# and arrange
+phenotype_order <- phenotype_counts %>%
+  arrange(desc(freq), min_p) %>%
+  pull(id) %>%
+  rev()
+
+# reorder
+top_phenos_df$id <- factor(top_phenos_df$id, levels = phenotype_order)
+
+svg(filename=paste0(HOMEDIR, 'introgression_methods/figures/rGREAT_phenotype_dot_3_or_more_methods_shared.svg'), width = 9, height = 12)
+
+# plot
+ggplot(top_phenos_df, aes(y = id, x = as.factor(method))) +
+  geom_point(aes(size = Overlap, color = fold_enrichment)) +
+  scale_color_gradient(low = "grey", high = "blue") +
+  scale_size_continuous(range = c(3, 8)) +
+  theme_minimal() +
+  labs(
+    y = "HPO Term",
+    x = "Method",
+    color = "Odds Ratio",
+    size = "Overlap",
+    title = "Significant Phenotypes Associated with Loci Supported by 3+ Methods"
+  ) +
+  # highlight if in high support loci
+  theme(
+    axis.text.y = element_text(
+      face = ifelse(top_phenos_df$highlight == "highlight", "bold", "plain")
+    )
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  theme(text = element_text(family = "Helvetica"))
+
+dev.off()
+```
+
+```{r}
+# try a version with combined HPO labels
+# https://github.com/emcarthur/phecode-HPO-map/blob/main/data/finalHPO-phecodeLinks/mapsFilteredByEvidenceType/hpo-phecode1.2_links_StrongEvidenceBroad.tsv
+
+```
+
+
+```{r}
+# compute and convert gene overlap to fraction
+top_phenos_df$Overlap <- top_phenos_df$observed_gene_hits / top_phenos_df$gene_set_size
+top_phenos_df$Overlap <- sapply(top_phenos_df$Overlap, function(x) eval(parse(text=as.character(x))))
+
+# Count number of methods per phenotype
+id_method_counts <- top_phenos_df %>%
+  group_by(id) %>%
+  summarise(method_count = n(), max_p = max(p_adjust))  # also get the min adjusted p-value per phenotype
+
+# Sort by method count (asc), then p_adjust (asc)
+sorted_ids <- id_method_counts %>%
+  arrange(method_count, max_p) %>%
+  pull(id)
+
+# Set factor levels in that order
+top_phenos_df$id <- factor(top_phenos_df$id, levels = sorted_ids)
+
+# add method names 
+top_phenos_df <- top_phenos_df %>% mutate(method = recode(method, !!!rename_dict))
+
+# Now plot with the reordered y-axis
+ggplot(top_phenos_df, aes(y = id, x = as.factor(method))) +
+  geom_point(aes(size = Overlap, color = fold_enrichment)) +
+  scale_color_gradient(low = "grey", high = "blue") +
+  scale_size_continuous(range = c(3, 8)) +
+  theme_minimal() +
+  labs(
+    y = "HPO Term",
+    x = "Method",
+    color = "Odds Ratio",
+    size = "Overlap",
+    title = "Significant Phenotypes Associated with Loci Supported by 3+ Methods"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+
+## Phenotypes associated with high-confidence introgressed loci
+### 10+ methods overlapping
+```{r}
+# run rGREAT
+res_list_10_or_more = run_GREAT_GO(input_file_bed_path="/wynton/home/capra/ychen39/introgression_methods/data/GREAT_analysis/input/overlap_10_more_methods_GREAT_merged.bed",
+                                               GO_type='msigdb:C5:HPO')
+
+# get enrichment table / sig phenotypes table
+tb_10_or_more = getEnrichmentTable(res_list_10_or_more) #Occasionally, the output p-values will be 0 since the lowest pvalue that GREAT can return is 1E-324. Enrichments more significant than this will show a pvalue of 0.
+sig_list_10_or_more = tb_10_or_more[tb_10_or_more$p_adjust < 0.05,]
+
+# edit names so they don't contain file path and suffix
+names(sig_list_10_or_more) <- sub("/", "", sub(GREAT_input_dir, "", sub("_GREAT_merged.bed$", "", names(sig_list_10_or_more))))
+
+# number of sig phenotypes
+# how many of these sig phenotypes are supported by 3+ separately (top_phenos)
+paste0("Number sig phenotypes:", nrow(sig_list_10_or_more), ", ", sum(!is.na(match(unique(top_phenos), unique(sig_list_10_or_more$id)))), " of these are supported by 3+ separately")
+```
+
+### 10 methods overlapping
+```{r}
+# run rGREAT
+res_list_10 = run_GREAT_GO(input_file_bed_path="/wynton/home/capra/ychen39/introgression_methods/data/GREAT_analysis/input/overlap_10_methods_GREAT_merged.bed",
+                                               GO_type='msigdb:C5:HPO')
+
+# get enrichment table / sig phenotypes table
+tb_10 = getEnrichmentTable(res_list_10) #Occasionally, the output p-values will be 0 since the lowest pvalue that GREAT can return is 1E-324. Enrichments more significant than this will show a pvalue of 0.
+sig_list_10 = tb_10[tb_10$p_adjust < 0.05,]
+
+# edit names so they don't contain file path and suffix
+names(sig_list_10) <- sub("/", "", sub(GREAT_input_dir, "", sub("_GREAT_merged.bed$", "", names(sig_list_10))))
+
+# number of sig phenotypes
+# how many of these sig phenotypes are supported by 3+ separately (top_phenos)
+paste0("Number sig phenotypes:", nrow(sig_list_10), ", ", sum(!is.na(match(unique(top_phenos), unique(sig_list_10$id)))), " of these are supported by 3+ separately")
+```
+
+### 10 methods overlapping, no archIE and Argweaverd
+```{r}
+
+# run rGREAT
+res_list_10_or_more_no_archie_argweaverd = run_GREAT_GO(input_file_bed_path="/wynton/home/capra/ychen39/introgression_methods/data/GREAT_analysis/input/overlap_10_no_archie_argweaver_GREAT_merged.bed", GO_type='msigdb:C5:HPO')
+
+# get enrichment table / sig phenotypes table
+tb_10_or_more_no_archie_argweaverd = getEnrichmentTable(res_list_10_or_more_no_archie_argweaverd) #Occasionally, the output p-values will be 0 since the lowest pvalue that GREAT can return is 1E-324. Enrichments more significant than this will show a pvalue of 0.
+sig_list_10_or_more_no_archie_argweaverd=tb_10_or_more_no_archie_argweaverd[tb_10_or_more_no_archie_argweaverd$p_adjust < 0.05,]
+
+# edit names so they don't contain file path and suffix
+names(sig_list_10_or_more_no_archie_argweaverd) <- sub("/", "", sub(GREAT_input_dir, "", sub("_GREAT_merged.bed$", "", names(sig_list_10_or_more_no_archie_argweaverd))))
+
+# number of sig phenotypes
+# how many of these sig phenotypes are supported by 3+ separately (top_phenos)
+paste0("Number sig phenotypes:", nrow(sig_list_10_or_more_no_archie_argweaverd), ", ", sum(!is.na(match(unique(top_phenos), unique(sig_list_10_or_more_no_archie_argweaverd$id)))), " of these are supported by 3+ separately")
+```
+
+### 10 methods overlapping, with nean background
+```{r}
+
+# run rGREAT
+res_list_10_or_more = run_GREAT_GO(input_file_bed_path="/wynton/home/capra/ychen39/introgression_methods/data/GREAT_analysis/input/overlap_10_methods_GREAT_merged.bed",
+                                   background_file_path_bed="/wynton/home/capra/ychen39/introgression_methods/data/GREAT_analysis/input/overlap_10_methods_background_GREAT.bed",
+                                   GO_type='msigdb:C5:HPO')
+
+# get enrichment table
+tb_10_or_more_background = getEnrichmentTable(res_list_10_or_more) 
+sig_list_10_or_more_background = tb_10_or_more[tb_10_or_more$p_adjust < 0.05,]
+
+# edit names so they don't contain file path and suffix
+names(sig_list_10_or_more_background) <- sub("/", "", sub(GREAT_input_dir, "", sub("_GREAT_merged.bed$", "", names(sig_list_10_or_more))))
+
+# number of sig phenotypes
+# how many of these sig phenotypes are supported by 3+ separately (top_phenos)
+paste0("Number sig phenotypes:", nrow(sig_list_10_or_more), ", ", sum(!is.na(match(unique(top_phenos), unique(sig_list_10_or_more$id)))), " of these are supported by 3+ separately")
+```
+
+### 12 methods overlapping
+```{r}
+# run rGREAT
+res_list_12_or_more = run_GREAT_GO(input_file_bed_path="/wynton/home/capra/ychen39/introgression_methods/data/GREAT_analysis/input/overlap_12_methods_GREAT_merged.bed", GO_type='msigdb:C5:HPO')
+
+# get enrichment table / sig phenotypes table
+tb_12_or_more = getEnrichmentTable(res_list_12_or_more)
+sig_list_12_or_more = tb_12_or_more[tb_12_or_more$p_adjust < 0.05,]
+
+# edit names so they don't contain file path and suffix
+names(sig_list_12_or_more) <- sub("/", "", sub(GREAT_input_dir, "", sub("_GREAT_merged.bed$", "", names(sig_list_12_or_more))))
+
+# number of sig phenotypes
+# how many of these sig phenotypes are supported by 3+ separately (top_phenos)
+paste0("Number sig phenotypes:", nrow(sig_list_12_or_more), ", ", sum(!is.na(match(unique(top_phenos), unique(sig_list_12_or_more$id)))), " of these are supported by 3+ separately")
+
+```
+
+# Generate file containing phenotypes associated with high-confidence loci
+```{r}
+rbind(sig_list_12_or_more, sig_list_10_or_more, sig_list_10_or_more_background, sig_list_10_or_more_no_archie_argweaverd)
+
+combined_high_support <- rbind(data.frame(id = "All methods overlapping", sig_list_12_or_more),
+      data.frame(id = "10+ methods overlapping", sig_list_10_or_more),
+      data.frame(id = "10+ methods overlapping, Neanderthal background", sig_list_10_or_more_background),
+      data.frame(id = "All methods, no Archie/ArgweaverD", sig_list_10_or_more_no_archie_argweaverd))
+
+ifelse(!dir.exists(file.path(paste0(HOMEDIR, '/introgression_methods/cleaned/supplement_data'))),
+        dir.create(file.path(paste0(HOMEDIR, '/introgression_methods/cleaned/supplement_data'))),
+        "Directory Exists")
+
+write_tsv(combined_high_support, file = paste0(HOMEDIR, '/introgression_methods/cleaned/supplement_data/rGREAT_phenotype_high_support.tsv'))
+
+write_tsv(all_phenos, file = paste0(HOMEDIR, '/introgression_methods/cleaned/supplement_data/rGREAT_phenotype_by_method.tsv'))
+
+
+```
+# Repeat bar/upset bar with 10+ methods and each map
+## Bar plot: number methods supporting a phenotype
+```{r}
+# get unique and shared (more than one method found a pheno sig) significant phenotypes
+sig_phenos <- all_phenos[all_phenos$p_adjust<0.05, ]
+unique_phenos <- sig_phenos %>% group_by(id) %>% filter(n() == 1)
+shared_phenos <- sig_phenos %>% group_by(id) %>% filter(n() > 1)
+
+# collapse multiple methods supporting a phenotype into one column
+# commas separating methods
+all_phenos_summarise <- sig_phenos %>%
+  group_by(id) %>%
+  arrange(p_adjust) %>%
+  reframe(
+    method = paste(unique(method), collapse = ", "),  # concatenate methods
+    num_methods_support = str_count(method, ", ") + 1,  # column for num methods supporting a phenotype
+    p_adjust = dplyr::first(p_adjust),  # keep smallest p_adjust
+    fold_enrichment = dplyr::first(fold_enrichment)  # keep smallest fold_enrichment
+)
+
+svg(filename=paste0(HOMEDIR, 'introgression_methods/figures/rGREAT_phenotype_counts_bar.svg'), width = 3, height = 3)
+
+ggplot(all_phenos_summarise, aes(x = factor(num_methods_support))) +
+  geom_bar(fill = "steelblue") +
+  geom_text(stat = "count", aes(label = ..count..), vjust = -0.5, size = 3) +  # Add counts above bars
+  labs(
+    x = "Number of Introgression Maps",
+    y = "Number of Significantly Enriched Phenotypes",
+  ) +
+  theme_minimal() +
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank()
+  )
+
+dev.off()
+```
+
+## Upset plot of multiple methods supporting sig phenotypes
+```{r}
+# get unique and shared (more than one method found a pheno sig) significant phenotypes
+sig_phenos <- all_phenos[all_phenos$p_adjust<0.05, ]
+# add sig_list_10_or_more
+sig_list_10_or_more$method <- 'Highly Supported Regions'
+sig_phenos_with_10_or_more <- rbind(sig_list_10_or_more, sig_phenos)
+
+# save this file -- will be in the supplemnt
+sig_phenos_with_10_or_more
+write_tsv(sig_phenos_with_10_or_more, file = paste0(HOMEDIR, '/introgression_methods/cleaned/supplement_data/rGREAT_sig_phenos_include_highsupportloci.tsv'))
+
+# collapse multiple methods supporting a phenotype into one column
+# commas separating methods
+phenos_summarise <- sig_phenos_with_10_or_more %>%
+  group_by(id) %>%
+  arrange(p_adjust) %>%
+  reframe(
+    method = paste(unique(method), collapse = ", "),  # concatenate methods
+    num_methods_support = str_count(method, ", ") + 1,  # column for num methods supporting a phenotype
+    p_adjust = dplyr::first(p_adjust),  # keep smallest p_adjust
+    fold_enrichment = dplyr::first(fold_enrichment)  # keep smallest fold_enrichment
+)
+
+# Prepare the data:
+upset_data <- phenos_summarise %>%
+  filter(num_methods_support >= 0) %>%       # Keep all combinations
+  dplyr::select(id, method) %>%              # Select phenotype id and method columns
+  separate_rows(method, sep = ", ") %>%      # Split comma-separated methods into individual rows
+  mutate(present = 1) %>%                    # Create an indicator for method presence
+  pivot_wider(
+    names_from = method,
+    values_from = present,
+    values_fill = list(present = 0),
+    values_fn = list(present = max)          # Resolve duplicate entries if any
+  ) %>%
+  ungroup()
+
+# manually add map names without any intersections
+upset_data$archie <- 0
+upset_data$ibdmix <- 0
+upset_data$sankararaman2016_2 <- 0
+upset_data$skov2020 <- 0
+upset_data$sprime <- 0
+
+
+# Remove the 'id' column (UpSetR expects only binary indicator columns)
+upset_matrix <- as.data.frame(upset_data %>% dplyr::select(-id))
+
+# Rename columns in your dataframe
+upset_matrix <- upset_matrix %>%
+  rename_with(~ rename_dict[.x], .cols = names(rename_dict)[names(rename_dict) %in% colnames(upset_matrix)])
+
+# Upset plot
+p <- ComplexUpset::upset(
+  upset_matrix,
+  intersect = colnames(upset_matrix),
+  name = "Intersections",
+  min_size = 5,
+  keep_empty_groups = TRUE,
+  base_annotations = list(
+    'Intersection size' = intersection_size(
+      text = list(vjust = -0.5, size = 2)
+    )
+  ),
+  set_sizes = (
+    upset_set_size() +
+    scale_y_continuous(name = "Number of Phenotypes")
+  ),
+  height_ratio = 1.2  # shrink intersection plot height
+  +
+  theme(
+    text = element_text(family = "Helvetica"),
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank()
+  )
+)
+
+# save
+ggsave(ggsave(paste0(HOMEDIR, 'introgression_methods/figures/introgression_tools/rgreat_upset_phenos.svg'), plot = p, width = 10, height = 4, device = "svg"))
+
+```
+
+# EnrichR analysis
+
+## Initialize custom functions
+```{r}
+# Function: check if any df in a named list of dfs contains a string
+contains_string <- function(df, string) {
+  any(grepl(string, df))}
+
+# Function: generate annotations, return combined annotation granges
+gene_list_annotation <- function(dir_list, base_path, input_bed_file, output_file_name, annotations_to_include){
+  # dir_list: vector of strings containing directories with input_bed_file and where you want output_file_path
+  # base_path: dir where the input_bed_file is and where output_file_name will be written
+  # output_file_name: file name to write gene list to
+  # annotations: vector of annotations to include, such as c('hg19_cpgs', 'hg19_basicgenes', 'hg19_genes_intergenic', 'hg19_genes_intronexonboundaries')
+
+  # Build the annotations (a single GRanges object)
+  annotations = build_annotations(genome = 'hg19', annotations = annotations_to_include)
+  
+  # overall annotations list
+  all_dm_annotated=GRanges()
+
+  # loop through each dir
+  for (dir in dir_list) {
+    # load each sorted merged bedgraph file
+    bed <- read.table(paste0(base_path, '/', dir, '/', input_bed_file), header = FALSE, sep="\t", stringsAsFactors=FALSE)
+    # remove chr prefix ('seqnames' contains sequence names with no entries in 'seqinfo' error)
+    bed$V1 <- ifelse(grepl("^chr", bed$V1), bed$V1, paste0("chr", bed$V1))
+    # read as granges
+    bg_granges = GRanges(seqnames = bed$V1,
+                        ranges = IRanges(start = bed$V2, end = bed$V3),
+                        genome = 'hg19',
+                        format = 'bed')
+
+    # Intersect the regions we read in with the annotations
+    dm_annotated = annotate_regions(
+    regions = bg_granges,
+    annotations = annotations,
+    ignore.strand = TRUE,
+    quiet = FALSE)
+
+    # Coerce to a data.frame
+    df_dm_annotated = data.frame(dm_annotated)
+  
+    # get unique genes
+    genes <- unique(na.omit(df_dm_annotated$annot.symbol))
+
+    # if there is an output file
+    if (hasArg(output_file_name)) {
+    write(genes, file = paste0(base_path, dir, '/', output_file_name))
+    }
+
+    # add method name to column
+    dm_annotated$method <- dir
+
+    # concatenate data in overall annotation file
+    all_dm_annotated <- c(dm_annotated, all_dm_annotated)
+    }
+  return(all_dm_annotated)
+}
+
+# Function: Create random regions
+random_regions<- function(input_bed_file, annotations_to_include){
+  # input_bed_file: input bed file to randomize
+  # annotations_to_include: vector for what annotations should be present
+  
+  # select annotations for intersection with regions
+  annots = annotations_to_include
+  
+  # build the annotations (a GRanges object)
+  annotations = build_annotations(genome = 'hg19', annotations = annots)
+  
+  # all methods file
+  bg_path <- input_bed_file
+  # read as granges
+  bg_granges = read_regions(con = bg_path, genome = 'hg19', format = 'bed')
+  
+  # add random annotation with union of all methods
+  # randomize the input regions
+  dm_random_regions = randomize_regions(
+      regions = bg_granges,
+      allow.overlaps = TRUE,
+      per.chromosome = TRUE)
+  
+  # annotate random regions using the same annotations previously used above
+  dm_random_annotated = annotate_regions(
+      regions = dm_random_regions,
+      annotations = annotations,
+      ignore.strand = TRUE,
+      quiet = TRUE)
+}
+```
+
+## Annotate exons in introgressed regions
+```{r}
+
+all_exon_dm_annotated <- gene_list_annotation(dir_list=deserts_dirs, 
+                     base_path=paste0(HOMEDIR, '/introgression_methods/cleaned/introgression_tools/'),
+                     input_bed_file='bedgraphs/sorted_union_merged_chr_prefix.bg', 
+                     output_file_name='exons_genes_list.txt', 
+                     annotations_to_include=c('hg19_genes_exons'))
+
+# and using the merged file across all methods
+all_methods_exon_dm_annotated <- gene_list_annotation(dir_list=c('introgression_tools'), 
+                     base_path=paste0(HOMEDIR, '/introgression_methods/cleaned/'),
+                     input_bed_file='merged_all_methods.bed', 
+                     output_file_name='all_methods_exons_genes_list.txt', 
+                     annotations_to_include=c('hg19_genes_exons'))
+```
+
+## Load exons for each method and across all methods -------------
+```{r}
+file_info <- list(
+  "IBDMix" = "chen_2020/exons_genes_list.txt",
+  "ArchaicSeeker2" = "yuan_2021/exons_genes_list.txt",
+  "ArchIE" = "durvasula_2019/exons_genes_list.txt",
+  "DICALADMIX" = "steinruecken_2018/exons_genes_list.txt",
+  "Skov20" = "skov_2020/exons_genes_list.txt",
+  "SARGE" = "schaefer_2021/exons_genes_list.txt",
+  "ARGWeaverD" = "hubisz_2020/exons_genes_list.txt",
+  "Sprime" = "browning_2018/exons_genes_list.txt",
+  "SStar" = "vernot_2016/exons_genes_list.txt",
+  "Sankararaman14" = "sankararaman_2014/exons_genes_list.txt",
+  "Sankararaman16_1" = "sankararaman_2016_1/exons_genes_list.txt",
+  "Sankararaman16_2" = "sankararaman_2016_2/exons_genes_list.txt"
+)
+
+# Initialize an empty list to store the genes by method
+exons_gene_list_by_method <- list()
+
+# Read each file and assign the gene lists directly to the list
+for (method in names(file_info)) {
+  file_path <- paste0(HOMEDIR, '/introgression_methods/cleaned/introgression_tools/', file_info[[method]])
+  gene_data <- read.table(file_path, header = TRUE, col.names = c('genes'), sep = "\t")
+  exons_gene_list_by_method[[method]] <- gene_data$genes
+}
+
+# Combine the genes into the final structure
+exons_combined_genes <- fromList(exons_gene_list_by_method)
+```
+
+## Run Enrichr: Exon gene set across methods. Note: GWAS_Catalog_2023 will not work for the all methods gene list, maybe too big?
+```{r}
+dbs <- c("Human_Phenotype_Ontology", "GWAS_Catalog_2023")
+
+# if there are no values that come up, don't bind it (causes an error), in values_to_check
+values_to_check <-c("The full stack trace of the", "pre.java.lang.ArrayIndexOutOfBoundsException")
+
+# make empty dataframe to store data
+enriched_by_method <- data.frame()
+# for each method, calculate enrichment for the databases
+for (exon_set in names(exons_gene_list_by_method)) {
+  # run enrichr with the database
+  enriched <- enrichr(exons_gene_list_by_method[[exon_set]], dbs)
+  # Filter out any dataframe that contains the string, preserving the names
+  enriched_filtered <- Filter(function(df) !contains_string(df, values_to_check), enriched)
+  # turn df list to a df
+  stacked_enriched <- bind_rows(enriched_filtered)
+  # add method name
+  stacked_enriched$method <- exon_set
+  # concatenate data
+  enriched_by_method <- bind_rows(stacked_enriched, enriched_by_method)
+}
+```
+
+## Get significant and phenotypes shared by methods (summarize them)
+```{r}
+sig_phenos_enrichr <- enriched_by_method[enriched_by_method$Adjusted.P.value<0.05, ]
+
+unique_phenos_enrichr <- sig_phenos_enrichr %>% group_by(Term) %>% filter(n() == 1)
+
+shared_phenos_enrichr <- sig_phenos_enrichr %>% group_by(Term) %>% filter(n() > 1)
+
+# If you want to retain other columns as well, include them in the summarise function
+# For example, you can retain column1, column2, etc. by using:
+shared_phenos_summarise <- shared_phenos_enrichr %>%
+  group_by(Term) %>%
+  arrange(Adjusted.P.value) %>%
+  reframe(
+    method = paste(unique(method), collapse = ", "),  # Concatenate unique method values
+    Adjusted.P.Value = dplyr::first(Adjusted.P.value),  # Get the smallest Adjusted.P.Value
+    Odds.Ratio = dplyr::first(Odds.Ratio),  # Keep the value from the row with the smallest Adjusted.P.Value
+    Overlap = dplyr::first(Overlap),
+  )
+```
+
+## Phenotypes associated with each method set
+```{r}
+sig_phenos_counts <- sig_phenos_enrichr %>%
+  group_by(method) %>%
+  summarise(count = n())
+
+sig_phenos_counts
+```
+
+## EnrichR PCA
+```{r}
+# subset data of interest
+subset <- enriched_by_method[c('Term', 'Adjusted.P.value', 'method')]
+
+# remove ARGWeaver-D and all methods
+#subset <- subset[subset$method != "ARGWeaverD", ]
+subset <- subset[subset$method != "All", ]
+
+subset$Adjusted.P.value <- as.numeric(subset$Adjusted.P.value)
+
+# pivot data so the introgression method are rows, columns are adjusted p for each phenotype
+pivot_data <- subset %>%
+  pivot_wider(
+    names_from = Term,
+    values_from = c(Adjusted.P.value)
+  )
+
+# remove introgression map label (method), save for later
+group_labels <- pivot_data$method
+# drop non-numeric columns
+pivot_data <- dplyr::select(pivot_data, where(is.numeric))
+
+# remove columns with NAs
+pivot_data <- pivot_data[, colSums(is.na(pivot_data)) == 0]
+
+# standardize data
+scaled_data <- scale(pivot_data)
+
+# remove columns with zero variance
+zero_variance_columns <- apply(scaled_data, 2, function(x) var(x) == 0)
+scaled_data <- scaled_data[, !zero_variance_columns]
+
+# PCA
+pca_result <- prcomp(scaled_data, center = TRUE, scale. = TRUE)
+
+# create data frame for PCA results
+pca_df <- as.data.frame(pca_result$x) %>%
+  mutate(method = group_labels)
+
+# calculate explained variance
+explained_variance <- pca_result$sdev^2 / sum(pca_result$sdev^2)
+
+# plot first two principal components
+plot = ggplot(pca_df, aes(x = PC1, y = PC2, color = method)) +
+  scale_color_brewer(palette="BrBG") +
+  geom_point(size = 3) +
+  labs(
+    title = "PCA of Adjusted P-Value by Introgression Map",
+    x = paste0("Principal Component 1 (", round(explained_variance[1]*100, digits=2), "%)"), 
+    y = paste0("Principal Component 2 (", round(explained_variance[2]*100, digits=2), "%)"),
+  ) +
+  theme_minimal() +
+  theme(legend.title = element_text(size = 10))
+
+# save plot as SVG
+ggsave(paste0(HOMEDIR, 'introgression_methods/figures/introgression_tools/exon_introgressed_pca.svg'), plot = plot, width = 6, height = 4, device = "svg")
+```
+
+## Plot phenos supported by 2+ methods as a dot plot
+```{r}
+# Sort by Adjusted.P.value
+df <- shared_phenos_enrichr[order(shared_phenos_enrichr$Adjusted.P.value), ]
+
+# convert Overlap to fraction
+df$Overlap <- sapply(df$Overlap, function(x) eval(parse(text=as.character(x))))
+
+# wrap long Term labels to a max
+df$Term_wrapped <- str_wrap(df$Term, width = 30)
+
+# create dot plot with y-axis labels
+dot_plot <- ggplot(df, aes(y = reorder(Term_wrapped, Adjusted.P.value), x = -log10(Adjusted.P.value))) +
+  geom_point(aes(size = Overlap, fill = Odds.Ratio), 
+             shape = 21, color = "black", stroke = 0.5) +
+  scale_color_gradient(low = "white", high = "red") +
+  scale_size_continuous(range = c(3, 10)) +
+  geom_text(aes(label = method), hjust = -0.5, size = 3) +  # Add labels
+  theme_minimal() +
+  labs(
+    y = "Term",
+    x = "-log10(Adjusted P-value)",
+    color = "Odds Ratio",
+    size = "Overlap",
+    title = "Phenotypes Associated With 2+ Methods"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# Save the plot as SVG
+ggsave(paste0(HOMEDIR, 'introgression_methods/figures/introgression_tools/enrichr_2ormoremethods.svg'), plot = dot_plot, width = 10, height = 6, device = "svg")
+```
+
+## Phenotypes associated with high-confidence introgressed loci
+### 10+ methods overlapping
+```{r}
+# read in all methods bed file
+all_methods <- read.table(paste0(HOMEDIR, '/introgression_methods/cleaned/introgression_tools/all_methods.bed'), sep="\t", stringsAsFactors=FALSE, header = TRUE)
+#replace empty strings with NA
+all_methods[all_methods==""]<-NA
+# keep entries supported by 10+ methods (14 because chrom, start, end, length)
+all_methods_support_10 <- all_methods[rowSums(!is.na(all_methods)) > 14, ]
+# subset to bed
+all_methods_support_10_bed <- all_methods_support_10[, c('chrom', 'start', 'end')]
+all_methods_support_10_bed$chrom <- paste0('chr', all_methods_support_10_bed$chrom)
+
+write.table(all_methods_support_10_bed, paste0(HOMEDIR, '/introgression_methods/cleaned/introgression_tools/support_10.bed'), col.names=FALSE, sep='\t', row.names = FALSE,  quote = FALSE)
+
+supported_10_exons_dm_annotated <- gene_list_annotation(dir_list=c('introgression_tools'), 
+                     base_path=paste0(HOMEDIR, '/introgression_methods/cleaned/'),
+                     input_bed_file='support_10.bed', 
+                     output_file_name='support_10_genes_list.txt', 
+                     annotations_to_include=c('hg19_genes_exons'))
+
+# run EnrichR
+# get gene list
+file_path <- paste0(HOMEDIR, '/introgression_methods/cleaned/introgression_tools/support_10_genes_list.txt')
+exons_gene_list_10_methods <- read.table(file_path, header = TRUE, col.names = c('genes'), sep = "\t")
+
+# select databases to run EnrichR on
+dbs <- c("Human_Phenotype_Ontology", "GWAS_Catalog_2023")
+
+# if there are no values that come up, don't bind it (causes an error), in values_to_check
+values_to_check <-c("The full stack trace of the", "pre.java.lang.ArrayIndexOutOfBoundsException")
+
+# make empty dataframe to store data
+enriched_by_method <- data.frame()
+
+# for each method, calculate enrichment for the databases
+enriched <- enrichr(exons_gene_list_10_methods$genes, dbs)
+  
+# Filter out any dataframe that contains the string, preserving the names
+enriched_filtered <- Filter(function(df) !contains_string(df, values_to_check), enriched)
+# turn df list to a df
+stacked_enriched <- bind_rows(enriched_filtered)
+
+sig_phenos_10_more_methods <- stacked_enriched[stacked_enriched$Adjusted.P.value<0.05, ]
+
+sig_phenos_10_more_methods = subset(sig_phenos_10_more_methods, select = -c(Old.Adjusted.P.value, Old.P.value, P.value, Genes, Combined.Score) )
+```
+
+### 10+ methods overlapping, no archIE/Argweaver-D
+```{r}
+# read in all methods bed file
+all_methods <- read.table(paste0(HOMEDIR, '/introgression_methods/cleaned/introgression_tools/all_methods.bed'), sep="\t", stringsAsFactors=FALSE, header = TRUE)
+#replace empty strings with NA
+all_methods[all_methods==""]<-NA
+
+# remove archie and argweaverd
+all_methods_no_archie_argweaverd = subset(all_methods, select = -c(archie, argweaverd) )
+
+# keep entries supported by 10+ methods (14 because chrom, start, end, length)
+all_methods_10_no_archie_argweaverd <- all_methods_no_archie_argweaverd[rowSums(!is.na(all_methods_no_archie_argweaverd)) == 14, ]
+
+write.table(all_methods_10_no_archie_argweaverd, paste0(HOMEDIR, '/introgression_methods/cleaned/introgression_tools/support_10_no_archie_argweaverd.bed'), col.names=FALSE, sep='\t', row.names = FALSE,  quote = FALSE)
+
+supported_10_no_archieargweaverd_exons_dm_annotated <- gene_list_annotation(dir_list=c('introgression_tools'), 
+                     base_path=paste0(HOMEDIR, '/introgression_methods/cleaned/'),
+                     input_bed_file='support_10_no_archie_argweaverd.bed', 
+                     output_file_name='support_10_no_archie_argweaverd_genes_list.txt', 
+                     annotations_to_include=c('hg19_genes_exons'))
+
+# run EnrichR
+# get gene list
+file_path <- paste0(HOMEDIR, '/introgression_methods/cleaned/introgression_tools/support_10_no_archie_argweaverd_genes_list.txt')
+exons_gene_list_10_no_archie_argweaverd <- read.table(file_path, header = TRUE, col.names = c('genes'), sep = "\t")
+
+# select databases to run EnrichR on
+dbs <- c("Human_Phenotype_Ontology", "GWAS_Catalog_2023")
+
+# if there are no values that come up, don't bind it (causes an error), in values_to_check
+values_to_check <-c("The full stack trace of the", "pre.java.lang.ArrayIndexOutOfBoundsException")
+
+# make empty dataframe to store data
+enriched_by_method <- data.frame()
+
+# for each method, calculate enrichment for the databases
+enriched <- enrichr(exons_gene_list_10_no_archie_argweaverd$genes, dbs)
+  
+# Filter out any dataframe that contains the string, preserving the names
+enriched_filtered <- Filter(function(df) !contains_string(df, values_to_check), enriched)
+# turn df list to a df
+stacked_enriched <- bind_rows(enriched_filtered)
+
+sig_phenos_10_no_archie_argweaverd <- stacked_enriched[stacked_enriched$Adjusted.P.value<0.05, ]
+
+sig_phenos_10_no_archie_argweaverd = subset(sig_phenos_10_no_archie_argweaverd, select = -c(Old.Adjusted.P.value, Old.P.value, P.value, Genes, Combined.Score) )
+
+```
+
+### 10+ methods overlapping, with nean background -- NOT WORKING, BACKGROUND THROWS AN ERROR
+```{r}
+gene_list_annotation(dir_list=c('introgression_tools'), 
+                     base_path=paste0(HOMEDIR, '/introgression_methods/cleaned/'),
+                     input_bed_file='all_methods_bed_only.bed', 
+                     output_file_name='nean_background_genes_list.txt', 
+                     annotations_to_include=c('hg19_genes_exons'))
+
+file_path <- paste0(HOMEDIR, '/introgression_methods/cleaned/introgression_tools/nean_background_genes_list.txt')
+nean_background <- readLines(file_path)
+
+# run EnrichR
+# get gene list
+file_path <- paste0(HOMEDIR, '/introgression_methods/cleaned/introgression_tools/support_10_genes_list.txt')
+exons_gene_list_10_methods <- read.table(file_path, header = TRUE, col.names = c('genes'), sep = "\t")
+
+# select databases to run EnrichR on
+dbs <- c("Human_Phenotype_Ontology", "GWAS_Catalog_2023")
+
+# if there are no values that come up, don't bind it (causes an error), in values_to_check
+values_to_check <-c("The full stack trace of the", "pre.java.lang.ArrayIndexOutOfBoundsException")
+
+# make empty dataframe to store data
+enriched_by_method <- data.frame()
+
+# for each method, calculate enrichment for the databases
+enriched <- enrichr(exons_gene_list_10_methods$genes, dbs, background=nean_background)
+  
+# Filter out any dataframe that contains the string, preserving the names
+enriched_filtered <- Filter(function(df) !contains_string(df, values_to_check), enriched)
+# turn df list to a df
+stacked_enriched <- bind_rows(enriched_filtered)
+
+sig_phenos_nean_background <- stacked_enriched[stacked_enriched$Adjusted.P.value<0.05, ]
+
+sig_phenos_nean_background = subset(sig_phenos_nean_background, select = -c(Old.Adjusted.P.value, Old.P.value, P.value, Genes, Combined.Score))
+```
+
+### 12 methods overlapping
+```{r}
+# read in all methods bed file
+all_methods <- read.table(paste0(HOMEDIR, '/introgression_methods/cleaned/introgression_tools/all_methods.bed'), sep="\t", stringsAsFactors=FALSE, header = TRUE)
+#replace empty strings with NA
+all_methods[all_methods==""]<-NA
+
+# keep entries supported by 10+ methods (14 because chrom, start, end, length)
+all_methods_12 <- all_methods[rowSums(!is.na(all_methods)) == 16, ]
+
+write.table(all_methods_12, paste0(HOMEDIR, '/introgression_methods/cleaned/introgression_tools/support_12.bed'), col.names=FALSE, sep='\t', row.names = FALSE,  quote = FALSE)
+
+support_12_exons_dm_annotated <- gene_list_annotation(dir_list=c('introgression_tools'), 
+                     base_path=paste0(HOMEDIR, '/introgression_methods/cleaned/'),
+                     input_bed_file='support_12.bed', 
+                     output_file_name='support_12_genes_list.txt', 
+                     annotations_to_include=c('hg19_genes_exons'))
+
+# run EnrichR
+# get gene list
+file_path <- paste0(HOMEDIR, '/introgression_methods/cleaned/introgression_tools/support_12_genes_list.txt')
+exons_gene_list_12 <- read.table(file_path, header = TRUE, col.names = c('genes'), sep = "\t")
+
+# select databases to run EnrichR on
+dbs <- c("Human_Phenotype_Ontology", "GWAS_Catalog_2023")
+
+# if there are no values that come up, don't bind it (causes an error), in values_to_check
+values_to_check <-c("The full stack trace of the", "pre.java.lang.ArrayIndexOutOfBoundsException")
+
+# make empty dataframe to store data
+enriched_by_method <- data.frame()
+
+# for each method, calculate enrichment for the databases
+enriched <- enrichr(exons_gene_list_12$genes, dbs)
+  
+# Filter out any dataframe that contains the string, preserving the names
+enriched_filtered <- Filter(function(df) !contains_string(df, values_to_check), enriched)
+# turn df list to a df
+stacked_enriched <- bind_rows(enriched_filtered)
+
+sig_phenos_12 <- stacked_enriched[stacked_enriched$Adjusted.P.value<0.05, ]
+
+sig_phenos_12 = subset(sig_phenos_12, select = -c(Old.Adjusted.P.value, Old.P.value, P.value, Genes, Combined.Score) )
+
+```
+## Generate file containing phenotypes associated with high-confidence loci
+```{r}
+rbind(sig_phenos_12, sig_phenos_10_no_archie_argweaverd, sig_phenos_10_more_methods)
+
+combined_high_support <- rbind(data.frame(id = "All methods overlapping", sig_phenos_12),
+      data.frame(id = "10+ methods overlapping", sig_phenos_10_more_methods),
+      data.frame(id = "All methods, no Archie/ArgweaverD", sig_phenos_10_no_archie_argweaverd))
+
+ifelse(!dir.exists(file.path(paste0(HOMEDIR, '/introgression_methods/cleaned/supplement_data'))),
+        dir.create(file.path(paste0(HOMEDIR, '/introgression_methods/cleaned/supplement_data'))),
+        "Directory Exists")
+
+write_tsv(combined_high_support, file = paste0(HOMEDIR, '/introgression_methods/cleaned/supplement_data/EnrichR_phenotype_high_support.tsv'))
+
+write_tsv(enriched_by_method, file = paste0(HOMEDIR, '/introgression_methods/cleaned/supplement_data/EnrichR_phenotype_by_method.tsv'))
+
+```
+
+# Deserts analysis
+## Plot existing deserts
+```{r}
+#save figure
+svg(paste0(HOMEDIR, '/introgression_methods/figures/introgression_tools/existing_deserts_karyoplot.svg'))
+
+chen_2020_original_deserts <- read.table(paste0(HOMEDIR, '/introgression_methods/cleaned/introgression_tools/chen_2020/original_deserts.bg'), header = FALSE, sep="\t",stringsAsFactors=FALSE, col.names=c("chr", "start", "end"))
+skov_2020_original_deserts <- read.table(paste0(HOMEDIR, '/introgression_methods/cleaned/introgression_tools/skov_2020/original_deserts.bg'), header = FALSE, sep="\t",stringsAsFactors=FALSE, col.names=c("chr", "start", "end"))
+vernot_2016_original_deserts <- read.table(paste0(HOMEDIR, '/introgression_methods/cleaned/introgression_tools/vernot_2016/original_deserts.bg'), header = FALSE, sep="\t",stringsAsFactors=FALSE, col.names=c("chr", "start", "end"))
+sankararaman_2016_original_deserts <- read.table(paste0(HOMEDIR, '/introgression_methods/cleaned/introgression_tools/sankararaman_2016_1/original_deserts.bg'), header = FALSE, sep="\t",stringsAsFactors=FALSE, col.names=c("chr", "start", "end"))
+yuan_2021_original_deserts <- read.table(paste0(HOMEDIR, '/introgression_methods/cleaned/introgression_tools/yuan_2021/original_deserts.bg'), header = FALSE, sep="\t",stringsAsFactors=FALSE, col.names=c("chr", "start", "end"))
+
+chen_2020_original_deserts$chr <- paste0("chr", chen_2020_original_deserts$chr)
+skov_2020_original_deserts$chr <- paste0("chr", skov_2020_original_deserts$chr)
+vernot_2016_original_deserts$chr <- paste0("chr", vernot_2016_original_deserts$chr)
+sankararaman_2016_original_deserts$chr <- paste0("chr", sankararaman_2016_original_deserts$chr)
+yuan_2021_original_deserts$chr <- paste0("chr", yuan_2021_original_deserts$chr)
+
+pp <- getDefaultPlotParams(plot.type=4)
+pp$data2height <- 20
+pp$leftmargin <- 0.5
+pp$topmargin <- 10
+pp$bottommargin <- 10
+
+kp <- plotKaryotype(plot.type=1, plot.params = pp)
+kpDataBackground(kp)
+
+# Define constants
+bar_height <- 2/15
+gap <- 1/17
+
+# Compute starting points
+r0s <- c()
+r1s <- c()
+start <- 1/18
+
+for (i in 0:4) {
+  r0 <- start + i * (bar_height + gap)
+  r1 <- r0 + bar_height
+  r0s <- c(r0s, r0)
+  r1s <- c(r1s, r1)
+}
+
+# Plot each region with matching r0/r1
+kpPlotRegions(kp, data=chen_2020_original_deserts, col="#e19153", r0=r0s[1], r1=r1s[1])
+kpPlotRegions(kp, data=skov_2020_original_deserts, col="#6daee2", r0=r0s[2], r1=r1s[2])
+kpPlotRegions(kp, data=vernot_2016_original_deserts, col="#DF8FE7", r0=r0s[3], r1=r1s[3])
+kpPlotRegions(kp, data=sankararaman_2016_original_deserts, col="#4aae8a", r0=r0s[4], r1=r1s[4])
+kpPlotRegions(kp, data=yuan_2021_original_deserts, col="#DCB510", r0=r0s[5], r1=r1s[5])
+
+dev.off()
+```
+
+## rGREAT on desert regions supported by all methods
+```{r}
+all_methods_support_deserts <-run_GREAT_GO(input_file_bed_path=paste0(HOMEDIR, 'introgression_methods/cleaned/introgression_tools/deserts_all_methods_overlap.bed'), GO_type='msigdb:C5:HPO')
+
+tb = getEnrichmentTable(all_methods_support_deserts)
+
+sig_list_all_methods_desert = tb[tb$p_adjust < 0.05,]
+```
+
+## rGREAT on desert regions supported by 3+ methods
+```{r}
+methods_support_deserts <-run_GREAT_GO(input_file_bed_path=paste0(HOMEDIR, 'introgression_methods/cleaned/introgression_tools/deserts_3_or_more_methods_overlap.bed'), GO_type='msigdb:C5:HPO')
+
+tb = getEnrichmentTable(methods_support_deserts)
+
+sig_list_methods_support_deserts = tb[tb$p_adjust < 0.05,]
+```

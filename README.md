@@ -10,9 +10,9 @@ output: github_document
 
 This repository contains data and scripts used in the Neanderthal introgression maps project. Please see the associated manuscript: "Comparing genomic Neanderthal introgression maps reveals core agreement but substantial heterogeneity"
 
-The data directory contains many of the data generated in the analysis, including introgression maps and deserts.
+The data directory contains data generated in the analysis, including introgression maps and deserts.
 
-The bin directory contains scripts and Jupyter Notebooks used in the analysis for data generation, data analysis, and data visualization. 
+The bin directory contains scripts and Jupyter Notebooks used in the analysis for data generation (data_preparation.ipynb), data analysis, and data visualization (figures_and_analysis.ipynb, phenotypes_analysis.Rmd). 
 
 The introgression_tools directory contains a custom tools.py containing functions used throughout the analysis.
 

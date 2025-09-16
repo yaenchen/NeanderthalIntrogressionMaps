@@ -1,0 +1,420 @@
+#Split in new
+chr1	2372140	2409360
+#Partially deleted in new
+chr1	3844612	4008669
+#Partially deleted in new
+chr1	10968479	10984259
+#Deleted in new
+chr1	10984259	10984406
+#Deleted in new
+chr1	10984406	10985052
+#Partially deleted in new
+chr1	81687175	81688110
+#Partially deleted in new
+chr1	165552374	165553815
+#Partially deleted in new
+chr1	187664474	187757430
+#Partially deleted in new
+chr1	194450664	194515053
+#Partially deleted in new
+chr1	194516263	194518793
+#Split in new
+chr1	196720826	196851132
+#Split in new
+chr1	205910132	206073267
+#Split in new
+chr1	206289222	206496239
+#Split in new
+chr1	207687129	207754310
+#Partially deleted in new
+chr1	213749674	213779026
+#Partially deleted in new
+chr1	218097070	218189168
+#Split in new
+chr1	222320854	222436723
+#Split in new
+chr1	223713032	224075970
+#Partially deleted in new
+chr1	232422514	232426559
+#Split in new
+chr10	1281433	1282367
+#Split in new
+chr10	1282367	1332599
+#Split in new
+chr10	18209444	18264676
+#Split in new
+chr10	36211784	36235885
+#Partially deleted in new
+chr10	54540789	54593777
+#Split in new
+chr10	59242610	59258022
+#Partially deleted in new
+chr10	66846417	66847165
+#Split in new
+chr10	79214316	79362196
+#Partially deleted in new
+chr10	111572125	111591304
+#Deleted in new
+chr10	123091990	123092006
+#Split in new
+chr10	124238422	124382966
+#Partially deleted in new
+chr10	125869200	125956348
+#Split in new
+chr10	129194607	129205257
+#Split in new
+chr10	132512686	132582549
+#Partially deleted in new
+chr10	133155616	133445819
+#Split in new
+chr10	133674627	133732971
+#Split in new
+chr10	135147623	135148829
+#Split in new
+chr10	135254900	135298365
+#Split in new
+chr11	267603	321290
+#Split in new
+chr11	469312	469482
+#Partially deleted in new
+chr11	43886092	43892179
+#Deleted in new
+chr11	61084429	61084444
+#Partially deleted in new
+chr11	69692230	69798747
+#Partially deleted in new
+chr11	87687663	87688337
+#Partially deleted in new
+chr11	87688337	87740938
+#Partially deleted in new
+chr11	92865007	92895624
+#Partially deleted in new
+chr12	7129349	7243830
+#Partially deleted in new
+chr12	13527171	13572181
+#Split in new
+chr12	17828458	17979090
+#Split in new
+chr12	17979090	18339496
+#Partially deleted in new
+chr12	34824839	38636277
+#Partially deleted in new
+chr12	43975015	43980900
+#Partially deleted in new
+chr12	59920008	59994817
+#Split in new
+chr12	87242590	87299759
+#Partially deleted in new
+chr12	99763589	99816568
+#Partially deleted in new
+chr12	105429809	105430465
+#Partially deleted in new
+chr12	122501863	122585456
+#Partially deleted in new
+chr12	127196924	127200311
+#Split in new
+chr12	128925971	128992689
+#Split in new
+chr12	129324506	129326030
+#Split in new
+chr12	132677646	132809728
+#Partially deleted in new
+chr13	27048029	27060432
+#Partially deleted in new
+chr13	32483883	32537768
+#Deleted in new
+chr13	32537768	32538419
+#Partially deleted in new
+chr13	32538419	32539234
+#Partially deleted in new
+chr13	110812384	110813488
+#Partially deleted in new
+chr13	112352772	112510751
+#Split in new
+chr13	114312309	114429404
+#Partially deleted in new
+chr14	30295081	30295896
+#Partially deleted in new
+chr14	48332234	48332239
+#Split in new
+chr14	65346094	65403313
+#Split in new
+chr14	105303312	105418392
+#Partially deleted in new
+chr15	23710040	23762842
+#Partially deleted in new
+chr15	27019215	27023523
+#Partially deleted in new
+chr15	55134440	55256580
+#Partially deleted in new
+chr15	98816514	98820109
+#Partially deleted in new
+chr15	101339523	101342320
+#Partially deleted in new
+chr16	8631566	8687418
+#Split in new
+chr16	22402026	22471894
+#Split in new
+chr17	3588807	3591224
+#Partially deleted in new
+chr17	12345638	12347216
+#Partially deleted in new
+chr17	74713164	74790473
+#Split in new
+chr17	77524856	77609125
+#Partially deleted in new
+chr18	5306613	5308108
+#Partially deleted in new
+chr18	11825226	11826323
+#Deleted in new
+chr18	50168419	50168438
+#Partially deleted in new
+chr18	54933400	54960444
+#Partially deleted in new
+chr18	74097821	74127570
+#Partially deleted in new
+chr18	75692485	75786216
+#Split in new
+chr18	76127878	76190914
+#Split in new
+chr18	76799281	76832742
+#Split in new
+chr19	7295649	7477564
+#Split in new
+chr19	7493003	7555388
+#Split in new
+chr19	29938524	29984421
+#Split in new
+chr19	34846619	34968210
+#Split in new
+chr19	39216444	39295860
+#Partially deleted in new
+chr19	45686553	45702575
+#Partially deleted in new
+chr19	52887904	52905907
+#Partially deleted in new
+chr19	55819845	55820190
+#Partially deleted in new
+chr19	56692280	56692318
+#Split in new
+chr2	1069603	1151355
+#Partially deleted in new
+chr2	3506285	3645491
+#Split in new
+chr2	11992830	11994782
+#Split in new
+chr2	11994798	12040328
+#Partially deleted in new
+chr2	33133057	33144402
+#Partially deleted in new
+chr2	34650545	34817258
+#Split in new
+chr2	110552150	110849145
+#Split in new
+chr2	110849145	110859672
+#Split in new
+chr2	110983050	111038867
+#Split in new
+chr2	138981274	139038608
+#Partially deleted in new
+chr2	161446968	161447228
+#Partially deleted in new
+chr2	170640300	170667962
+#Partially deleted in new
+chr2	182855335	182867659
+#Partially deleted in new
+chr2	194578830	194749597
+#Partially deleted in new
+chr2	211923476	211924388
+#Partially deleted in new
+chr2	211999463	212000225
+#Partially deleted in new
+chr2	223716018	223762670
+#Partially deleted in new
+chr2	233995788	234061041
+#Split in new
+chr2	235504435	235616361
+#Split in new
+chr2	238451396	238469523
+#Partially deleted in new
+chr2	238832619	238833045
+#Partially deleted in new
+chr2	239801894	239834008
+#Split in new
+chr2	240562596	240566666
+#Partially deleted in new
+chr2	240754053	240813301
+#Split in new
+chr2	241682080	241787710
+#Split in new
+chr2	242718490	242767578
+#Split in new
+chr2	242790490	242822458
+#Partially deleted in new
+chr20	5483899	5484639
+#Partially deleted in new
+chr20	60318801	60319895
+#Partially deleted in new
+chr20	61211821	61284644
+#Split in new
+chr21	41514552	41586371
+#Split in new
+chr21	43990377	44015448
+#Partially deleted in new
+chr22	17751780	17807922
+#Split in new
+chr22	21803941	21867566
+#Partially deleted in new
+chr22	24180626	24208412
+#Split in new
+chr22	24208412	24280010
+#Deleted in new
+chr22	24280010	24280080
+#Split in new
+chr22	33689292	33759989
+#Partially deleted in new
+chr22	33759989	33804804
+#Partially deleted in new
+chr22	50355622	50415860
+#Partially deleted in new
+chr3	4065358	4107280
+#Partially deleted in new
+chr3	6605904	6654629
+#Partially deleted in new
+chr3	7820444	7820659
+#Partially deleted in new
+chr3	23762884	23768881
+#Partially deleted in new
+chr3	25025689	25032380
+#Partially deleted in new
+chr3	32058802	32128391
+#Partially deleted in new
+chr3	66165932	66270277
+#Split in new
+chr3	123197541	123201983
+#Partially deleted in new
+chr3	148276244	148312123
+#Partially deleted in new
+chr3	187120394	187172690
+#Partially deleted in new
+chr3	190993236	191320956
+#Split in new
+chr3	191320956	191417466
+#Split in new
+chr3	197036506	197163927
+#Split in new
+chr4	9990328	10418686
+#Partially deleted in new
+chr4	27417176	27417254
+#Partially deleted in new
+chr4	42658483	42778232
+#Partially deleted in new
+chr4	61320456	61335014
+#Partially deleted in new
+chr4	115519858	115519896
+#Partially deleted in new
+chr4	120016357	120017555
+#Partially deleted in new
+chr4	146421357	146443518
+#Partially deleted in new
+chr4	181128044	181128068
+#Split in new
+chr4	190732156	190758604
+#Split in new
+chr5	1956787	1983066
+#Split in new
+chr5	2147061	2163621
+#Split in new
+chr5	2779237	2851856
+#Partially deleted in new
+chr5	95909193	95910057
+#Split in new
+chr5	115130472	115131158
+#Partially deleted in new
+chr5	155069045	155294143
+#Partially deleted in new
+chr5	166323301	166323345
+#Split in new
+chr6	26674315	26967956
+#Partially deleted in new
+chr6	43882090	43936206
+#Split in new
+chr6	61956952	62416270
+#Partially deleted in new
+chr6	72805811	72879378
+#Split in new
+chr6	157548437	157612881
+#Split in new
+chr6	157612881	157776783
+#Partially deleted in new
+chr6	167941472	168042151
+#Split in new
+chr6	168093355	168153028
+#Partially deleted in new
+chr6	170269355	170330744
+#Partially deleted in new
+chr7	528944	551069
+#Partially deleted in new
+chr7	606306	615892
+#Partially deleted in new
+chr7	19775976	19776082
+#Partially deleted in new
+chr7	50254932	50411455
+#Partially deleted in new
+chr7	52093307	52095301
+#Partially deleted in new
+chr7	68458888	68462436
+#Split in new
+chr7	70407366	70436312
+#Split in new
+chr7	70436312	70447985
+#Split in new
+chr7	100367341	100694601
+#Partially deleted in new
+chr7	113953811	113953818
+#Partially deleted in new
+chr7	133793551	133859580
+#Partially deleted in new
+chr7	154263814	154396060
+#Split in new
+chr7	157540041	157626928
+#Split in new
+chr7	158751824	158816551
+#Split in new
+chr8	1198955	1263924
+#Split in new
+chr8	1305419	1378198
+#Split in new
+chr8	1378198	1418970
+#Partially deleted in new
+chr8	3587209	3587484
+#Partially deleted in new
+chr8	5969497	5972681
+#Partially deleted in new
+chr8	6101462	6101547
+#Deleted in new
+chr8	13618245	13618271
+#Partially deleted in new
+chr8	132251479	132280692
+#Partially deleted in new
+chr9	6670074	6727608
+#Split in new
+chr9	73306381	73365553
+#Partially deleted in new
+chr9	92341274	92497871
+#Partially deleted in new
+chr9	92519268	92870113
+#Partially deleted in new
+chr9	101347909	101348479
+#Partially deleted in new
+chr9	110431994	110436216
+#Split in new
+chr9	117058616	117113402
+#Partially deleted in new
+chr9	129072752	129072784
+#Partially deleted in new
+chr9	130489073	130489085
+#Partially deleted in new
+chr9	133055639	133229369
+#Partially deleted in new
+chr9	137040766	137114063

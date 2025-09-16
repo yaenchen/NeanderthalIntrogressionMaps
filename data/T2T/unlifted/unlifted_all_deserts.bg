@@ -1,0 +1,30 @@
+#Split in new
+chr1	102465556	104542622	1	1	.	1	0
+#Split in new
+chr10	46000000	53759760	1	0	.	0	0
+#Split in new
+chr15	20000000	28245146	1	0	.	0	0
+#Split in new
+chr16	19860086	22000000	1	0	.	0	0
+#Partially deleted in new
+chr16	40000000	50033911	1	0	.	0	0
+#Split in new
+chr2	95665745	97665737	0	1	.	0	0
+#Split in new
+chr20	24980636	25980636	0	1	.	0	0
+#Partially deleted in new
+chr3	90060069	90500000	0	0	.	1	0
+#Split in new
+chr5	68295827	69295827	1	1	.	0	0
+#Split in new
+chr5	69295827	70295827	1	0	.	0	0
+#Split in new
+chr7	99597623	100643281	0	1	.	0	0
+#Split in new
+chr7	143697093	145697093	0	1	.	0	0
+#Split in new
+chr8	145074168	146000000	1	0	.	0	0
+#Split in new
+chr9	37999997	47000000	1	0	.	0	0
+#Split in new
+chrX	46000000	53029179	1	0	.	0	0

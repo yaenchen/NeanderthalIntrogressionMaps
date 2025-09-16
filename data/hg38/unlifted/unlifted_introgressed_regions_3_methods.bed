@@ -1,0 +1,106 @@
+#Split in new
+chr1	13634781	13645696
+#Split in new
+chr1	13645696	13652652
+#Split in new
+chr1	149698416	149711897
+#Partially deleted in new
+chr1	206015514	206073267
+#Split in new
+chr10	17993432	18113063
+#Split in new
+chr10	18117939	18119745
+#Split in new
+chr10	18120368	18128219
+#Partially deleted in new
+chr10	39160493	42360493
+#Split in new
+chr10	42513250	42606875
+#Deleted in new
+chr10	125885750	125894502
+#Partially deleted in new
+chr10	128748750	128767150
+#Deleted in new
+chr10	133702476	133702650
+#Split in new
+chr11	50711394	51211394
+#Partially deleted in new
+chr11	51611394	54766876
+#Partially deleted in new
+chr11	69087698	69114940
+#Partially deleted in new
+chr12	109360180	109410180
+#Partially deleted in new
+chr12	122526486	122585253
+#Partially deleted in new
+chr13	112353888	112507594
+#Deleted in new
+chr13	114348250	114404250
+#Partially deleted in new
+chr14	22880089	22884822
+#Partially deleted in new
+chr14	23018755	23018918
+#Split in new
+chr14	106462386	106478354
+#Split in new
+chr14	106478750	106486177
+#Split in new
+chr14	106486177	106487921
+#Split in new
+chr14	106526842	106537284
+#Split in new
+chr14	106550016	106569689
+#Partially deleted in new
+chr17	347550	397752
+#Split in new
+chr17	21501575	21550051
+#Partially deleted in new
+chr17	22256398	25200000
+#Deleted in new
+chr17	77547750	77554250
+#Split in new
+chr17	77605838	77609125
+#Partially deleted in new
+chr19	7316750	7386250
+#Split in new
+chr19	8850848	8873994
+#Split in new
+chr19	54854242	54860841
+#Split in new
+chr2	1215154	1240179
+#Partially deleted in new
+chr2	110227250	110253750
+#Deleted in new
+chr20	61243119	61249250
+#Partially deleted in new
+chr21	42953795	42961238
+#Split in new
+chr22	20378835	20690675
+#Split in new
+chr22	20693180	20709744
+#Deleted in new
+chr3	66183250	66246035
+#Partially deleted in new
+chr5	46410042	49410042
+#Deleted in new
+chr6	58813853	61863853
+#Partially deleted in new
+chr6	170313853	170330744
+#Partially deleted in new
+chr7	57964807	61064807
+#Split in new
+chr7	61264807	61514807
+#Split in new
+chr7	61564807	61764807
+#Split in new
+chr8	2211739	2216935
+#Partially deleted in new
+chr8	12062738	12198249
+#Partially deleted in new
+chr9	133073020	133093750
+#Partially deleted in new
+chr9	137040766	137058250
+#Partially deleted in new
+chr9	137075250	137093866
+#Partially deleted in new
+chrX	143529750	143566750

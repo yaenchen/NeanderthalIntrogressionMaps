@@ -34,7 +34,7 @@ project_directory # The working directory
 │   └── environment.txt # list of packages in conda environment used
 └── bin 
     ├── bash_scripts # custom scripts used in analysis
-    ├── data_preparation.ipynb # data cleaning notebook
-    ├── figures_and_analysis.ipynb # notebook for analysis and figure generation in the manuscript
-    └── phenotypes_analysis.Rmd # R markdown file for analysis and figure generation in the manuscripts (phenotype enrichments)
+    ├── 0_data_preparation.ipynb # data cleaning notebook, run this first to clean data
+    ├── 1_figures_and_analysis.ipynb # notebook for analysis and figure generation in the manuscript
+    └── 2_phenotypes_analysis.Rmd # R markdown file for analysis and figure generation in the manuscripts (phenotype enrichments)
 ```

@@ -30,7 +30,8 @@ project_directory # The working directory
 │   ├── hg38
 │   └── T2T
 ├── introgression_tools
-│   └── tools.py # custom package containing functions written for analysis
+│   ├── tools.py # custom package containing functions written for analysis
+│   └── environment.txt # list of packages in conda environment used
 └── bin 
     ├── bash_scripts # custom scripts used in analysis
     ├── data_preparation.ipynb # data cleaning notebook

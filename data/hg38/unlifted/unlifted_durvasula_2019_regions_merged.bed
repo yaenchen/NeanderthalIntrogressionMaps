@@ -13,9 +13,13 @@ chr13	86870046	87120046
 #Split in new
 chr14	106450016	106550016
 #Partially deleted in new
+chr16	8560085	8660085
+#Partially deleted in new
 chr17	250051	300051
 #Split in new
 chr17	21450051	21550051
+#Partially deleted in new
+chr2	5110178	5160178
 #Partially deleted in new
 chr2	172810178	172910178
 #Partially deleted in new
@@ -31,15 +35,11 @@ chr22	24200074	24400074
 #Split in new
 chr3	195210068	195260068
 #Partially deleted in new
-chr4	31810004	31960004
-#Partially deleted in new
 chr4	59660004	59760004
-#Partially deleted in new
-chr6	51063853	51113853
 #Split in new
 chr6	57913853	58313853
 #Partially deleted in new
-chr6	58663853	58813853
+chr6	58613853	58813853
 #Split in new
 chr6	61863853	62113853
 #Split in new
@@ -57,7 +57,7 @@ chr7	154364807	154414807
 #Split in new
 chr8	2311739	2411739
 #Partially deleted in new
-chr8	43811739	43861739
+chr8	43761739	43861739
 #Partially deleted in new
 chr8	46811739	46911739
 #Split in new
@@ -66,3 +66,5 @@ chr8	142811739	142861739
 chr8	146261739	146311739
 #Split in new
 chr9	44060162	44260162
+#Split in new
+chr9	45710162	45760162

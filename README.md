@@ -1,18 +1,18 @@
 ---
-title: "NeanderthalIntrogressionMaps.md"
+title: "neanderthal_introgression_maps.md"
 author: "Yaen Chen"
-date: "2025-08-11"
+date: "2026-02-18"
 output: github_document
 ---
-# Code and data for "Comparing genomic Neanderthal introgression maps reveals core agreement but substantial heterogeneity"
+# Code and Data for "Comparing genomic Neanderthal introgression maps reveals core agreement but substantial heterogeneity"
    
 ## Overview
 
 This repository contains data and scripts used in the Neanderthal introgression maps project. Please see the associated manuscript: "Comparing genomic Neanderthal introgression maps reveals core agreement but substantial heterogeneity"
 
-The data directory contains data generated in the analysis, including introgression maps and deserts.
+The data directory contains many of the data generated in the analysis, including introgression maps and deserts.
 
-The bin directory contains scripts and Jupyter Notebooks used in the analysis for data generation (data_preparation.ipynb), data analysis, and data visualization (figures_and_analysis.ipynb, phenotypes_analysis.Rmd). 
+The bin directory contains scripts and Jupyter Notebooks used in the analysis for data generation, data analysis, and data visualization. 
 
 The introgression_tools directory contains a custom tools.py containing functions used throughout the analysis.
 
@@ -25,16 +25,15 @@ Project directory:
 
 ```bash
 project_directory # The working directory
-├── data # see README for additional file descriptions within each folder
+├── data
 │   ├── hg19
 │   ├── hg38
 │   └── T2T
 ├── introgression_tools
-│   ├── tools.py # custom package containing functions written for analysis
-│   └── environment.txt # list of packages in conda environment used
+│   └── tools.py # custom package containing functions written for analysis
 └── bin 
     ├── bash_scripts # custom scripts used in analysis
-    ├── 0_data_preparation.ipynb # data cleaning notebook, run this first to clean data
-    ├── 1_figures_and_analysis.ipynb # notebook for analysis and figure generation in the manuscript
-    └── 2_phenotypes_analysis.Rmd # R markdown file for analysis and figure generation in the manuscripts (phenotype enrichments)
+    ├── data_preparation.ipynb # data cleaning notebook
+    ├── figures_and_analysis.ipynb # notebook for analysis and figure generation in the manuscript
+    └── phenotypes_analysis.Rmd # R markdown file for analysis and figure generation in the manuscripts (phenotype enrichments)
 ```

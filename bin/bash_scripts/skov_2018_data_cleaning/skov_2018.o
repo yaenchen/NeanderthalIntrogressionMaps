@@ -1,0 +1,13 @@
+/scratch/1720470.1.member.q
+scratch dir: /scratch/1720470.1.member.q
+Generating merged bedgraph file for EUR
+Generating merged bedgraph file for EAS
+Generating merged bedgraph file for AMR
+Generating merged bedgraph file for CentralSouthAsia
+Generating merged bedgraph file for Oceania
+Generating merged bedgraph file for MiddleEast
+Output .bed file is located at /wynton/home/capra/ychen39//introgression_methods/cleaned/introgression_tools/skov_2018//nean_skov2018_frag.bed
+Cleaning individual-level data...
+python script scratch dir: /scratch/1720470.1.member.q
+Generated individual-level file for MiddleEast
+Concatenating individual-level files...

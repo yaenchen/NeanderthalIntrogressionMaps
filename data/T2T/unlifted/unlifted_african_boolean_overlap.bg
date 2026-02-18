@@ -1,0 +1,678 @@
+#Partially deleted in new
+chr1	3971711	4000040	False	False	.	True
+#Split in new
+chr1	13186887	13765086	True	False	.	False
+#Partially deleted in new
+chr1	41739353	41739764	True	False	.	False
+#Partially deleted in new
+chr1	55046419	55119524	True	False	.	False
+#Partially deleted in new
+chr1	56130585	56140850	True	False	.	True
+#Partially deleted in new
+chr1	58733762	58748642	True	False	.	False
+#Partially deleted in new
+chr1	80113593	80115306	True	False	.	False
+#Partially deleted in new
+chr1	80221794	80237801	True	False	.	False
+#Split in new
+chr1	103774224	103849265	True	False	.	True
+#Split in new
+chr1	103849265	103913993	True	False	.	False
+#Split in new
+chr1	113595260	113616959	False	False	.	True
+#Split in new
+chr1	147800855	147875683	False	False	.	True
+#Split in new
+chr1	149343638	149944934	True	False	.	False
+#Partially deleted in new
+chr1	150506823	150515020	True	False	.	False
+#Partially deleted in new
+chr1	163332269	163332286	False	False	.	False
+#Partially deleted in new
+chr1	176472028	176483000	False	False	.	True
+#Partially deleted in new
+chr1	187716117	187732129	True	False	.	True
+#Partially deleted in new
+chr1	197474517	197507217	False	False	.	True
+#Split in new
+chr1	205921285	206275029	True	False	.	False
+#Split in new
+chr1	206326485	206585056	True	False	.	False
+#Split in new
+chr1	207676912	207915935	True	False	.	False
+#Partially deleted in new
+chr1	210075536	210112839	True	False	.	False
+#Partially deleted in new
+chr1	213664479	213680289	True	False	.	True
+#Partially deleted in new
+chr1	218175756	218197920	True	False	.	True
+#Partially deleted in new
+chr1	236541356	236552529	True	False	.	False
+#Split in new
+chr1	248549045	248570188	False	False	.	True
+#Split in new
+chr10	440479	454082	True	False	.	True
+#Split in new
+chr10	1256775	1290366	True	False	.	True
+#Partially deleted in new
+chr10	1290366	1291444	True	False	.	False
+#Split in new
+chr10	1291444	1321851	True	False	.	True
+#Split in new
+chr10	1579142	1586206	False	False	.	True
+#Split in new
+chr10	1738641	1746149	True	False	.	True
+#Partially deleted in new
+chr10	13254936	13264194	True	False	.	True
+#Partially deleted in new
+chr10	15529771	15536181	True	False	.	True
+#Split in new
+chr10	17769206	18326361	True	False	.	False
+#Partially deleted in new
+chr10	38662473	39023143	False	False	.	False
+#Partially deleted in new
+chr10	39036591	43134069	False	False	.	False
+#Split in new
+chr10	46156242	46947680	True	False	.	False
+#Partially deleted in new
+chr10	65499058	65510702	False	False	.	True
+#Partially deleted in new
+chr10	70785043	70791454	True	True	.	True
+#Split in new
+chr10	79274173	79282305	False	False	.	True
+#Partially deleted in new
+chr10	81188085	81188493	False	False	.	False
+#Partially deleted in new
+chr10	93615167	93639655	False	False	.	True
+#Partially deleted in new
+chr10	111561817	111579557	False	False	.	True
+#Split in new
+chr10	124310520	124359145	True	False	.	False
+#Split in new
+chr10	124360046	124384662	False	False	.	True
+#Partially deleted in new
+chr10	128601493	128963751	True	False	.	False
+#Split in new
+chr10	129172866	129208436	True	False	.	False
+#Partially deleted in new
+chr10	133310069	133445843	True	False	.	False
+#Partially deleted in new
+chr10	133675025	133702476	False	False	.	True
+#Partially deleted in new
+chr10	134000843	134000882	False	False	.	True
+#Split in new
+chr10	134313230	134324336	True	False	.	True
+#Split in new
+chr10	135122752	135173001	True	False	.	False
+#Split in new
+chr10	135289126	135295142	True	False	.	True
+#Split in new
+chr11	268015	356447	True	False	.	False
+#Split in new
+chr11	3256042	3361490	True	False	.	False
+#Split in new
+chr11	4939619	4982915	True	False	.	False
+#Partially deleted in new
+chr11	9523085	9528872	False	False	.	False
+#Partially deleted in new
+chr11	35272654	35302665	False	False	.	True
+#Partially deleted in new
+chr11	48194180	48916583	True	False	.	False
+#Partially deleted in new
+chr11	48916583	48935298	True	False	.	True
+#Partially deleted in new
+chr11	48935298	48986357	True	False	.	False
+#Split in new
+chr11	50096736	50155355	True	False	.	True
+#Split in new
+chr11	50200820	50312151	True	False	.	True
+#Split in new
+chr11	50312151	55656389	True	False	.	False
+#Partially deleted in new
+chr11	69080621	69114940	False	False	.	True
+#Partially deleted in new
+chr11	87668984	87904867	True	False	.	False
+#Partially deleted in new
+chr11	92867272	92880785	True	False	.	True
+#Partially deleted in new
+chr11	96055514	96536084	True	False	.	False
+#Partially deleted in new
+chr11	101489295	101596301	True	False	.	True
+#Split in new
+chr12	9662271	9750020	True	False	.	False
+#Partially deleted in new
+chr12	13540178	13555654	True	False	.	True
+#Split in new
+chr12	17811508	18288997	True	False	.	False
+#Partially deleted in new
+chr12	22561865	22589568	True	False	.	True
+#Partially deleted in new
+chr12	33283829	33335180	True	False	.	True
+#Partially deleted in new
+chr12	59925885	59940516	False	False	.	True
+#Partially deleted in new
+chr12	60389391	60419935	False	False	.	True
+#Split in new
+chr12	87215766	87297895	False	False	.	True
+#Partially deleted in new
+chr12	99793179	99802784	False	False	.	True
+#Partially deleted in new
+chr12	100274199	100293423	False	False	.	True
+#Partially deleted in new
+chr12	127969982	127984760	False	False	.	True
+#Split in new
+chr12	132816124	132823686	False	False	.	True
+#Split in new
+chr12	132988573	132999646	False	False	.	True
+#Partially deleted in new
+chr13	32530930	32622350	True	False	.	False
+#Partially deleted in new
+chr13	41929927	41931397	True	False	.	False
+#Split in new
+chr13	110771289	110810657	True	False	.	False
+#Partially deleted in new
+chr13	112352771	112510750	True	False	.	False
+#Split in new
+chr13	114795495	114801751	False	False	.	True
+#Partially deleted in new
+chr14	25258827	25273226	True	False	.	False
+#Split in new
+chr14	35005001	35117766	True	False	.	False
+#Split in new
+chr14	35508633	35521536	True	False	.	True
+#Partially deleted in new
+chr14	35603740	35657706	True	False	.	False
+#Partially deleted in new
+chr14	82465472	82528561	True	False	.	True
+#Partially deleted in new
+chr14	101333896	101345710	True	False	.	True
+#Split in new
+chr14	105294281	105500759	True	False	.	False
+#Partially deleted in new
+chr15	23739036	23765101	True	False	.	False
+#Partially deleted in new
+chr15	57976086	57983364	True	False	.	False
+#Partially deleted in new
+chr15	71710757	71715149	True	False	.	False
+#Partially deleted in new
+chr15	76879189	76918360	False	False	.	True
+#Split in new
+chr15	82386384	83337692	True	False	.	False
+#Partially deleted in new
+chr15	84529419	84556680	True	False	.	False
+#Split in new
+chr15	84801906	85162322	True	False	.	False
+#Partially deleted in new
+chr15	98190618	98207129	True	False	.	False
+#Partially deleted in new
+chr15	98896836	98904334	True	False	.	True
+#Partially deleted in new
+chr15	100798165	100819181	True	False	.	False
+#Split in new
+chr16	794179	808060	True	False	.	False
+#Split in new
+chr16	1274895	1292867	False	False	.	True
+#Split in new
+chr16	1294899	1308954	False	False	.	True
+#Partially deleted in new
+chr16	8635924	8662026	True	False	.	True
+#Partially deleted in new
+chr16	8662026	8724038	True	False	.	False
+#Partially deleted in new
+chr16	16927731	16955735	True	False	.	True
+#Split in new
+chr16	28471417	28499529	False	False	.	True
+#Split in new
+chr17	14859	32198	True	False	.	True
+#Split in new
+chr17	65198	72067	True	False	.	True
+#Split in new
+chr17	72067	143488	True	False	.	False
+#Partially deleted in new
+chr17	292689	347550	False	False	.	True
+#Split in new
+chr17	839424	847282	False	False	.	True
+#Split in new
+chr17	960906	976705	True	False	.	True
+#Partially deleted in new
+chr17	4732511	4738138	False	False	.	True
+#Partially deleted in new
+chr17	14173675	14198995	True	False	.	False
+#Split in new
+chr17	16672120	16786008	True	False	.	False
+#Partially deleted in new
+chr17	36509898	36569714	True	False	.	True
+#Partially deleted in new
+chr17	37637827	37639027	True	False	.	False
+#Partially deleted in new
+chr17	64259765	64269613	False	False	.	True
+#Partially deleted in new
+chr18	5306114	5314270	True	False	.	True
+#Partially deleted in new
+chr18	38856394	38865295	False	False	.	True
+#Partially deleted in new
+chr18	59663528	59677808	True	False	.	True
+#Partially deleted in new
+chr18	72276594	72308278	False	False	.	True
+#Partially deleted in new
+chr18	72308461	72341310	False	False	.	True
+#Partially deleted in new
+chr18	75371018	75383494	True	False	.	False
+#Split in new
+chr18	75650000	75747125	True	False	.	False
+#Partially deleted in new
+chr18	75747125	75773180	True	False	.	True
+#Split in new
+chr19	292089	341947	True	False	.	False
+#Partially deleted in new
+chr19	341947	352518	True	False	.	True
+#Partially deleted in new
+chr19	1639979	1650755	False	False	.	True
+#Split in new
+chr19	8331471	8394574	True	False	.	False
+#Partially deleted in new
+chr19	8683928	8712242	False	False	.	True
+#Split in new
+chr19	14719016	14755448	True	False	.	False
+#Partially deleted in new
+chr19	31283669	31309464	False	False	.	True
+#Partially deleted in new
+chr19	45693022	45713513	True	False	.	False
+#Partially deleted in new
+chr2	636105	654395	True	False	.	True
+#Split in new
+chr2	1215154	1240179	True	False	.	True
+#Split in new
+chr2	1345291	1377747	True	False	.	False
+#Partially deleted in new
+chr2	1478847	1486022	False	False	.	True
+#Partially deleted in new
+chr2	3523613	3555121	True	False	.	True
+#Partially deleted in new
+chr2	3555121	3633954	True	False	.	False
+#Split in new
+chr2	3822971	3837339	False	False	.	True
+#Partially deleted in new
+chr2	4780316	4802636	False	False	.	True
+#Partially deleted in new
+chr2	5018075	5125943	True	False	.	False
+#Partially deleted in new
+chr2	31716171	31727820	False	False	.	True
+#Partially deleted in new
+chr2	33090536	33095258	True	False	.	False
+#Partially deleted in new
+chr2	33126521	33148376	True	False	.	False
+#Partially deleted in new
+chr2	57415530	57424956	False	False	.	True
+#Partially deleted in new
+chr2	70651886	70671690	False	False	.	True
+#Partially deleted in new
+chr2	76768926	76784373	True	False	.	True
+#Partially deleted in new
+chr2	89005544	89051791	True	False	.	True
+#Partially deleted in new
+chr2	95302454	95347231	False	False	.	True
+#Partially deleted in new
+chr2	110226404	110251404	False	False	.	True
+#Split in new
+chr2	110424015	110863986	True	False	.	False
+#Split in new
+chr2	110874615	111567831	True	False	.	False
+#Partially deleted in new
+chr2	126508686	126516894	True	False	.	False
+#Partially deleted in new
+chr2	159613329	159626334	True	False	.	True
+#Split in new
+chr2	159950440	159970190	True	False	.	False
+#Partially deleted in new
+chr2	160148958	160159808	True	False	.	True
+#Partially deleted in new
+chr2	233994020	234029099	False	False	.	True
+#Partially deleted in new
+chr2	234029702	234055959	False	False	.	True
+#Split in new
+chr2	235544423	235558855	True	False	.	True
+#Partially deleted in new
+chr2	239798895	239817023	True	False	.	True
+#Deleted in new
+chr2	239817023	239828470	True	False	.	False
+#Partially deleted in new
+chr2	239828470	239847713	True	False	.	False
+#Split in new
+chr2	239990476	239997696	True	False	.	True
+#Partially deleted in new
+chr2	240779293	240796915	False	False	.	True
+#Split in new
+chr2	241582192	241641509	True	False	.	False
+#Partially deleted in new
+chr2	241734920	241750044	False	False	.	True
+#Split in new
+chr2	242800129	243152634	True	False	.	False
+#Partially deleted in new
+chr20	14242374	14242381	True	False	.	False
+#Partially deleted in new
+chr20	15708870	15719289	False	False	.	True
+#Split in new
+chr20	25603775	29520529	True	False	.	False
+#Partially deleted in new
+chr20	33225139	33268482	False	False	.	True
+#Partially deleted in new
+chr20	42019819	42028720	True	False	.	True
+#Partially deleted in new
+chr20	42672790	42680786	False	False	.	True
+#Partially deleted in new
+chr20	61116812	61143486	False	False	.	True
+#Partially deleted in new
+chr20	62390475	62398369	True	False	.	True
+#Split in new
+chr21	33944474	33956451	False	False	.	True
+#Partially deleted in new
+chr21	39585649	39592432	False	False	.	True
+#Split in new
+chr21	41378180	41439655	True	False	.	False
+#Partially deleted in new
+chr21	43232603	43257042	True	False	.	True
+#Split in new
+chr21	43989827	43990712	True	False	.	False
+#Split in new
+chr21	44000942	44012660	True	False	.	True
+#Partially deleted in new
+chr22	17765505	17804175	True	False	.	False
+#Partially deleted in new
+chr22	17996998	18005908	True	False	.	True
+#Partially deleted in new
+chr22	18005908	18062087	True	False	.	False
+#Split in new
+chr22	21340546	22345495	True	False	.	False
+#Partially deleted in new
+chr22	27164756	27171993	False	False	.	True
+#Split in new
+chr22	31983929	31995341	True	False	.	True
+#Split in new
+chr22	33707427	33759988	True	False	.	False
+#Split in new
+chr22	47010075	47015870	False	False	.	True
+#Split in new
+chr22	49062382	49069484	True	False	.	True
+#Partially deleted in new
+chr22	49561404	49562755	True	False	.	False
+#Partially deleted in new
+chr3	4659646	4661802	True	False	.	False
+#Partially deleted in new
+chr3	6649759	6664749	True	False	.	True
+#Partially deleted in new
+chr3	20492588	20493040	True	False	.	False
+#Partially deleted in new
+chr3	22079312	22103374	True	False	.	False
+#Deleted in new
+chr3	32807224	32807739	False	False	.	False
+#Partially deleted in new
+chr3	66162275	66246035	True	False	.	False
+#Partially deleted in new
+chr3	66246035	66296548	True	False	.	True
+#Partially deleted in new
+chr3	80055459	80066679	False	False	.	True
+#Partially deleted in new
+chr3	104999332	105001522	True	False	.	False
+#Partially deleted in new
+chr3	143161737	143177379	True	False	.	False
+#Partially deleted in new
+chr3	148274887	148298114	False	False	.	True
+#Partially deleted in new
+chr3	161817412	161818685	True	False	.	False
+#Partially deleted in new
+chr3	180085501	180093821	False	False	.	True
+#Split in new
+chr3	186519140	186604273	True	False	.	False
+#Partially deleted in new
+chr3	187116595	187224830	True	False	.	False
+#Partially deleted in new
+chr3	191052391	191067796	True	True	.	True
+#Partially deleted in new
+chr3	191067796	191074660	True	True	.	False
+#Partially deleted in new
+chr3	191223447	191232620	True	False	.	True
+#Deleted in new
+chr3	191232620	191320987	True	False	.	False
+#Split in new
+chr3	195300131	195438993	True	False	.	False
+#Split in new
+chr3	195515663	195571849	True	False	.	False
+#Split in new
+chr3	197133943	197158023	True	False	.	False
+#Partially deleted in new
+chr3	197158023	197170366	True	False	.	True
+#Partially deleted in new
+chr4	8788128	8847734	True	False	.	False
+#Partially deleted in new
+chr4	31794205	31842002	False	False	.	True
+#Partially deleted in new
+chr4	42713420	42790065	True	True	.	False
+#Split in new
+chr4	49656239	52741046	True	False	.	False
+#Partially deleted in new
+chr4	59737923	59830697	True	False	.	False
+#Partially deleted in new
+chr4	61321014	61356828	True	False	.	False
+#Partially deleted in new
+chr4	61929418	61945920	True	False	.	True
+#Split in new
+chr4	69054205	69074200	False	False	.	True
+#Split in new
+chr4	88806547	88859377	True	False	.	False
+#Partially deleted in new
+chr4	93805750	93866276	False	False	.	True
+#Partially deleted in new
+chr4	104891400	104903768	False	True	.	False
+#Partially deleted in new
+chr4	106044655	106045366	False	False	.	False
+#Partially deleted in new
+chr4	107602734	107612663	True	False	.	True
+#Partially deleted in new
+chr4	115175498	115187171	False	False	.	True
+#Partially deleted in new
+chr4	142213608	142233059	True	False	.	False
+#Partially deleted in new
+chr4	150156584	150162736	False	False	.	True
+#Partially deleted in new
+chr4	154600802	154600813	True	False	.	False
+#Partially deleted in new
+chr4	171038646	171084692	True	False	.	True
+#Split in new
+chr4	189970734	189977276	True	False	.	True
+#Split in new
+chr4	189977276	190070149	True	False	.	False
+#Split in new
+chr5	504858	675387	True	False	.	False
+#Partially deleted in new
+chr5	1945600	1952070	True	False	.	False
+#Split in new
+chr5	2141747	2153867	True	False	.	False
+#Partially deleted in new
+chr5	31676332	31680484	True	False	.	False
+#Partially deleted in new
+chr5	42626871	42638498	False	False	.	True
+#Partially deleted in new
+chr5	57308968	57330183	True	False	.	True
+#Partially deleted in new
+chr5	57330183	57340957	True	False	.	False
+#Partially deleted in new
+chr5	83946233	83964141	False	False	.	True
+#Partially deleted in new
+chr5	90490125	90505400	False	False	.	True
+#Partially deleted in new
+chr5	95965215	95978569	False	False	.	True
+#Partially deleted in new
+chr5	101883514	101883543	True	False	.	False
+#Partially deleted in new
+chr5	116831042	116836781	True	False	.	True
+#Split in new
+chr5	147535651	147563062	False	False	.	True
+#Partially deleted in new
+chr5	155457263	155486220	True	False	.	True
+#Partially deleted in new
+chr6	666510	673539	True	False	.	False
+#Split in new
+chr6	673539	681594	True	False	.	True
+#Partially deleted in new
+chr6	1345132	1364441	True	False	.	True
+#Split in new
+chr6	7269272	7274370	True	False	.	True
+#Partially deleted in new
+chr6	23737797	23789877	True	False	.	False
+#Partially deleted in new
+chr6	24646519	24646539	False	False	.	True
+#Partially deleted in new
+chr6	24804762	24821960	True	False	.	False
+#Split in new
+chr6	26659094	26908800	True	False	.	False
+#Partially deleted in new
+chr6	34036952	34041045	False	False	.	True
+#Partially deleted in new
+chr6	35622439	35630277	False	False	.	True
+#Partially deleted in new
+chr6	56747991	56761573	True	False	.	False
+#Split in new
+chr6	57719487	58141945	True	False	.	False
+#Partially deleted in new
+chr6	61886614	61967452	True	False	.	False
+#Split in new
+chr6	62088712	62325724	True	False	.	False
+#Split in new
+chr6	66259379	66267083	True	False	.	True
+#Partially deleted in new
+chr6	70189999	70197317	False	False	.	True
+#Partially deleted in new
+chr6	95192756	95204730	True	False	.	True
+#Partially deleted in new
+chr6	122299166	122305139	False	False	.	True
+#Partially deleted in new
+chr6	133337199	133353096	True	False	.	True
+#Split in new
+chr6	157401695	157641115	True	False	.	False
+#Partially deleted in new
+chr6	166696247	166699459	True	False	.	False
+#Split in new
+chr6	167369205	167414840	False	False	.	True
+#Split in new
+chr6	169228896	169242256	True	False	.	False
+#Partially deleted in new
+chr6	170264354	170330743	True	False	.	False
+#Split in new
+chr6	170472142	170517490	True	False	.	False
+#Deleted in new
+chr6	170819990	170835951	False	False	.	True
+#Split in new
+chr7	149644	385116	True	False	.	False
+#Split in new
+chr7	961250	971114	True	False	.	False
+#Split in new
+chr7	971114	984266	True	False	.	True
+#Partially deleted in new
+chr7	24035121	24046248	False	False	.	True
+#Partially deleted in new
+chr7	43412023	43416124	True	False	.	False
+#Partially deleted in new
+chr7	46366462	46371980	True	False	.	False
+#Partially deleted in new
+chr7	48652204	48664122	False	False	.	True
+#Partially deleted in new
+chr7	50369003	50390858	True	False	.	True
+#Partially deleted in new
+chr7	50390858	50441093	True	False	.	False
+#Split in new
+chr7	56320821	56594694	True	False	.	False
+#Partially deleted in new
+chr7	56615449	56661659	True	False	.	False
+#Split in new
+chr7	67130997	67134768	True	False	.	False
+#Partially deleted in new
+chr7	100554819	100581509	False	False	.	True
+#Partially deleted in new
+chr7	101723499	101736247	True	False	.	False
+#Split in new
+chr7	107029379	107066698	False	False	.	True
+#Partially deleted in new
+chr7	113405871	113429206	False	False	.	True
+#Partially deleted in new
+chr7	133785850	133809475	False	False	.	True
+#Split in new
+chr7	143254521	143573545	True	False	.	False
+#Split in new
+chr7	143873461	144127405	True	False	.	False
+#Split in new
+chr7	150293902	150309611	False	False	.	True
+#Split in new
+chr7	154915141	154917907	True	False	.	False
+#Split in new
+chr7	157434437	157547403	True	False	.	False
+#Split in new
+chr7	158031108	158051112	True	False	.	False
+#Split in new
+chr8	1161131	1266957	True	False	.	False
+#Partially deleted in new
+chr8	1774710	1784298	False	False	.	True
+#Split in new
+chr8	1833211	1842318	False	False	.	True
+#Partially deleted in new
+chr8	5967142	5974158	True	False	.	True
+#Partially deleted in new
+chr8	18444856	18464834	True	False	.	True
+#Partially deleted in new
+chr8	32648691	32703675	True	False	.	False
+#Partially deleted in new
+chr8	73784361	73796071	False	False	.	True
+#Partially deleted in new
+chr8	86564510	86844098	True	False	.	False
+#Partially deleted in new
+chr8	134319029	134329003	True	False	.	True
+#Partially deleted in new
+chr8	137149953	137160952	False	False	.	True
+#Split in new
+chr8	142745153	142785602	False	False	.	True
+#Split in new
+chr8	145268129	145399555	False	False	.	True
+#Partially deleted in new
+chr9	6696285	6720774	True	False	.	False
+#Partially deleted in new
+chr9	71729707	71761469	True	False	.	False
+#Split in new
+chr9	73334747	73365638	False	False	.	True
+#Partially deleted in new
+chr9	82842839	82847633	True	False	.	False
+#Partially deleted in new
+chr9	83262641	83279914	True	False	.	True
+#Partially deleted in new
+chr9	90369923	90375475	True	False	.	True
+#Partially deleted in new
+chr9	92310739	92450465	True	False	.	True
+#Partially deleted in new
+chr9	92525741	92602539	True	False	.	True
+#Deleted in new
+chr9	92602539	92668728	True	False	.	False
+#Partially deleted in new
+chr9	92668728	92680229	True	False	.	False
+#Partially deleted in new
+chr9	104219771	104223461	True	False	.	True
+#Partially deleted in new
+chr9	104438266	104447405	True	False	.	True
+#Partially deleted in new
+chr9	110536238	110539055	True	False	.	False
+#Partially deleted in new
+chr9	110539055	110545453	True	False	.	True
+#Split in new
+chr9	115623424	115705498	True	False	.	False
+#Partially deleted in new
+chr9	132913507	133233074	True	False	.	False
+#Split in new
+chr9	136054387	136067436	True	False	.	True
+#Partially deleted in new
+chr9	136377758	136383450	True	False	.	False
+#Partially deleted in new
+chr9	137035798	137066025	False	False	.	True
+#Partially deleted in new
+chr9	137066254	137093866	False	False	.	True
+#Split in new
+chr9	137737141	137744921	False	False	.	True
+#Split in new
+chr9	140458739	140465483	False	False	.	True
